@@ -3,20 +3,32 @@
     [
       "simple:normal:intermediate:clear:greeting:quick_response",
       0.15000000000000002
+    ],
+    [
+      "medium:normal:intermediate:clear:general:quick_response",
+      1.2973722423490512
+    ],
+    [
+      "simple:normal:intermediate:clear:general:quick_response",
+      0.6142650000000001
+    ],
+    [
+      "medium:0.7:intermediate:clear:code:quick_response",
+      0.15000000000000002
     ]
   ],
   "stats": {
-    "totalSteps": 1,
+    "totalSteps": 26,
     "totalEpisodes": 0,
-    "totalReward": 1.5,
+    "totalReward": 39,
     "averageReward": 1.5,
-    "explorationRate": 0.2994,
+    "explorationRate": 0.2964179520719424,
     "learningRate": 0.1
   },
   "config": {
     "learningRate": 0.1,
     "discountFactor": 0.95,
-    "explorationRate": 0.3,
+    "explorationRate": 0.2964179520719424,
     "explorationDecay": 0.998,
     "minExplorationRate": 0.01,
     "replayBufferSize": 10000,

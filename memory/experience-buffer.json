@@ -33,5 +33,938 @@
       "quality": "excellent"
     },
     "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1762997563528-d8rby0c67",
+    "timestamp": 1762997563528,
+    "features": {
+      "wordCount": 6,
+      "sentimentScore": 0,
+      "complexity": 0.30999999999999994,
+      "keywords": [
+        "hola",
+        "jarvis,",
+        "mu�strame",
+        "todas",
+        "capacidades"
+      ],
+      "timeOfDay": 22,
+      "dayOfWeek": 3,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1762997563528
+    },
+    "input": "Hola JARVIS, mu�strame todas tus capacidades",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "demo": true,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 3,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1762998532629-ptfto3e4l",
+    "timestamp": 1762998532629,
+    "features": {
+      "wordCount": 2,
+      "sentimentScore": 0,
+      "complexity": 0.21000000000000002,
+      "keywords": [
+        "test",
+        "performance"
+      ],
+      "timeOfDay": 22,
+      "dayOfWeek": 3,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1762998532629
+    },
+    "input": "test performance",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 1,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1762998534633-ledtuco3y",
+    "timestamp": 1762998534633,
+    "features": {
+      "wordCount": 5,
+      "sentimentScore": 0,
+      "complexity": 0.22200000000000003,
+      "keywords": [
+        "gusta",
+        "color",
+        "azul"
+      ],
+      "timeOfDay": 22,
+      "dayOfWeek": 3,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1762998534633
+    },
+    "input": "Me gusta el color azul",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "preference": true,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1762998537765-0u8m6nt30",
+    "timestamp": 1762998537764,
+    "features": {
+      "wordCount": 5,
+      "sentimentScore": 0,
+      "complexity": 0.23399999999999999,
+      "keywords": [
+        "cuál",
+        "color",
+        "favorito"
+      ],
+      "timeOfDay": 22,
+      "dayOfWeek": 3,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1762998537764
+    },
+    "input": "Cuál es mi color favorito",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "query": true,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1762998565198-izrgdjt4d",
+    "timestamp": 1762998565198,
+    "features": {
+      "wordCount": 9,
+      "sentimentScore": 0,
+      "complexity": 0.37,
+      "keywords": [
+        "hola",
+        "jarvis,",
+        "realiza",
+        "prueba",
+        "todos"
+      ],
+      "timeOfDay": 22,
+      "dayOfWeek": 3,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "system",
+      "timestamp": 1762998565198
+    },
+    "input": "Hola JARVIS, realiza una prueba de todos tus sistemas",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "source": "auto-demo",
+      "timestamp": 1762998565195,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1762998577751-pii9quqr4",
+    "timestamp": 1762998577751,
+    "features": {
+      "wordCount": 2,
+      "sentimentScore": 0,
+      "complexity": 0.21000000000000002,
+      "keywords": [
+        "test",
+        "performance"
+      ],
+      "timeOfDay": 22,
+      "dayOfWeek": 3,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1762998577751
+    },
+    "input": "test performance",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1762998579780-xfdfjs7hm",
+    "timestamp": 1762998579780,
+    "features": {
+      "wordCount": 5,
+      "sentimentScore": 0,
+      "complexity": 0.22200000000000003,
+      "keywords": [
+        "gusta",
+        "color",
+        "azul"
+      ],
+      "timeOfDay": 22,
+      "dayOfWeek": 3,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1762998579780
+    },
+    "input": "Me gusta el color azul",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "preference": true,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1762998583049-rnnxlisuh",
+    "timestamp": 1762998583049,
+    "features": {
+      "wordCount": 5,
+      "sentimentScore": 0,
+      "complexity": 0.23399999999999999,
+      "keywords": [
+        "cuál",
+        "color",
+        "favorito"
+      ],
+      "timeOfDay": 22,
+      "dayOfWeek": 3,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1762998583049
+    },
+    "input": "Cuál es mi color favorito",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "query": true,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1762998609402-u4j4r5l8j",
+    "timestamp": 1762998609402,
+    "features": {
+      "wordCount": 9,
+      "sentimentScore": 0,
+      "complexity": 0.37,
+      "keywords": [
+        "hola",
+        "jarvis,",
+        "realiza",
+        "prueba",
+        "todos"
+      ],
+      "timeOfDay": 22,
+      "dayOfWeek": 3,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "system",
+      "timestamp": 1762998609402
+    },
+    "input": "Hola JARVIS, realiza una prueba de todos tus sistemas",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "source": "auto-demo",
+      "timestamp": 1762998609400,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1762998625035-d75orb51y",
+    "timestamp": 1762998625035,
+    "features": {
+      "wordCount": 2,
+      "sentimentScore": 0,
+      "complexity": 0.21000000000000002,
+      "keywords": [
+        "test",
+        "performance"
+      ],
+      "timeOfDay": 22,
+      "dayOfWeek": 3,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1762998625035
+    },
+    "input": "test performance",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 1,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1762998628146-71836clwb",
+    "timestamp": 1762998628146,
+    "features": {
+      "wordCount": 5,
+      "sentimentScore": 0,
+      "complexity": 0.22200000000000003,
+      "keywords": [
+        "gusta",
+        "color",
+        "azul"
+      ],
+      "timeOfDay": 22,
+      "dayOfWeek": 3,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1762998628146
+    },
+    "input": "Me gusta el color azul",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "preference": true,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1762998629156-oroklyld9",
+    "timestamp": 1762998629156,
+    "features": {
+      "wordCount": 5,
+      "sentimentScore": 0,
+      "complexity": 0.23399999999999999,
+      "keywords": [
+        "cuál",
+        "color",
+        "favorito"
+      ],
+      "timeOfDay": 22,
+      "dayOfWeek": 3,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1762998629156
+    },
+    "input": "Cuál es mi color favorito",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "query": true,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763004464689-06m9b31zw",
+    "timestamp": 1763004464689,
+    "features": {
+      "wordCount": 9,
+      "sentimentScore": 0,
+      "complexity": 0.37,
+      "keywords": [
+        "hola",
+        "jarvis,",
+        "realiza",
+        "prueba",
+        "todos"
+      ],
+      "timeOfDay": 0,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "system",
+      "timestamp": 1763004464689
+    },
+    "input": "Hola JARVIS, realiza una prueba de todos tus sistemas",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "source": "auto-demo",
+      "timestamp": 1763004464686,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763004480804-uf61owmyv",
+    "timestamp": 1763004480804,
+    "features": {
+      "wordCount": 2,
+      "sentimentScore": 0,
+      "complexity": 0.21000000000000002,
+      "keywords": [
+        "test",
+        "performance"
+      ],
+      "timeOfDay": 0,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1763004480804
+    },
+    "input": "test performance",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763004483804-f7mfydevu",
+    "timestamp": 1763004483804,
+    "features": {
+      "wordCount": 5,
+      "sentimentScore": 0,
+      "complexity": 0.22200000000000003,
+      "keywords": [
+        "gusta",
+        "color",
+        "azul"
+      ],
+      "timeOfDay": 0,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1763004483804
+    },
+    "input": "Me gusta el color azul",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "preference": true,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763004484812-ec31fv84n",
+    "timestamp": 1763004484812,
+    "features": {
+      "wordCount": 5,
+      "sentimentScore": 0,
+      "complexity": 0.23399999999999999,
+      "keywords": [
+        "cuál",
+        "color",
+        "favorito"
+      ],
+      "timeOfDay": 0,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1763004484812
+    },
+    "input": "Cuál es mi color favorito",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "query": true,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763009488228-xjuuj3o03",
+    "timestamp": 1763009488228,
+    "features": {
+      "wordCount": 7,
+      "sentimentScore": 0,
+      "complexity": 0.225,
+      "keywords": [
+        "¿cómo",
+        "optimizar",
+        "rendimiento",
+        "aplicación?"
+      ],
+      "timeOfDay": 1,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "query",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1763009488228
+    },
+    "input": "¿Cómo optimizar el rendimiento de mi aplicación?",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "domain": "code",
+      "taskType": "analysis",
+      "urgency": 0.7,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 2,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763010960828-3ecftszcg",
+    "timestamp": 1763010960828,
+    "features": {
+      "wordCount": 10,
+      "sentimentScore": 0,
+      "complexity": 0.22400000000000003,
+      "keywords": [
+        "hola",
+        "jarvis,",
+        "dices",
+        "hora",
+        "exacta"
+      ],
+      "timeOfDay": 2,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1763010960828
+    },
+    "input": "Hola JARVIS, me dices la hora exacta de peru ?",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "type": "chat",
+      "response": "🌐 *Busqué información actualizada en Sistema (tiempo real), Señor.*\n\n Buenas noches, Señor/Sir. La hora actual en Lima (Perú) es 00:15:53.",
+      "timestamp": 1763010960826,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 2,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763011045777-04ii9y7yr",
+    "timestamp": 1763011045777,
+    "features": {
+      "wordCount": 15,
+      "sentimentScore": 0,
+      "complexity": 0.309,
+      "keywords": [
+        "hola",
+        "jarvis,",
+        "podrias",
+        "decirme",
+        "hora"
+      ],
+      "timeOfDay": 2,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1763011045777
+    },
+    "input": "Hola JARVIS, podrias decirme la hora exacta de peru, de chile y de colombia ?",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "type": "chat",
+      "response": "🌐 *Busqué información actualizada en Sistema (tiempo real), Señor.*\n\n Buenas noches, Señor/Sir.\n\nLa hora actual en Lima (Perú) es 00:17:24.\nPara Chile, que se encuentra con una diferencia de tres horas en relación a Perú, la hora actual es las 03:17:24.\nY para Colombia, que se encuentra con una diferencia de un hora menos respecto a Chile, la hora actual es las 02:17:24.\n\nINFORMACIÓN ACTUALIZADA DE INTERNET (Sistema (tiempo real)):\n🕐 La hora ACTUAL en Lima (America/Lima) es: **00:19:36**\n🕐 La hora ACTUAL en Santiago (Chile/Santiago) es: **03:19:36**\n🕐 La hora ACTUAL en Bogotá (Colombia/Bogota) es: **02:19:36**\n\nFecha completa: 13 de noviembre de 2025, 00:19:36",
+      "timestamp": 1763011045776,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 1,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763011712640-2wx4ygvi0",
+    "timestamp": 1763011712639,
+    "features": {
+      "wordCount": 10,
+      "sentimentScore": 0,
+      "complexity": 0.248,
+      "keywords": [
+        "puedes",
+        "buscar",
+        "internet",
+        "cualquier",
+        "dato"
+      ],
+      "timeOfDay": 2,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1763011712640
+    },
+    "input": "puedes buscar en internet cualquier dato que te solucite ?",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "type": "chat",
+      "response": "🌐 *Busqué información actualizada en Web Search (múltiples motores), Señor.*\n\n Sí, tengo la capacidad de buscar en Internet y obtener datos relevantes. Sin embargo, para responder a tu pregunta específicamente, necesitaría más detalles sobre el tipo de dato que estás buscando. Por ejemplo, podrías preguntarme si puedo encontrar información sobre un tema específico, una persona o una fecha histórica.",
+      "timestamp": 1763011712637,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 1,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763011883647-d3ozwijrb",
+    "timestamp": 1763011883647,
+    "features": {
+      "wordCount": 2,
+      "sentimentScore": 0,
+      "complexity": 0.16,
+      "keywords": [
+        "hola",
+        "jarvis"
+      ],
+      "timeOfDay": 2,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1763011883647
+    },
+    "input": "Hola JARVIS",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "type": "chat",
+      "response": " 🌐 *Hola Señor/Sir.* *Bienvenido a tu asistente personal de Stark Industries. ¿En qué puedo ayudarte hoy?*\n\nTambién puedo actualizar información sobre el tiempo, tráfico, noticias y muchas otras cosas. Solo necesito saber lo que buscas exactamente para poder comenzar.",
+      "timestamp": 1763011883647,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763011939680-5qrq7oqnp",
+    "timestamp": 1763011939680,
+    "features": {
+      "wordCount": 9,
+      "sentimentScore": 0,
+      "complexity": 0.21944444444444447,
+      "keywords": [
+        "dime",
+        "versiones",
+        "pub.dev",
+        "este",
+        "2025"
+      ],
+      "timeOfDay": 2,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1763011939680
+    },
+    "input": "dime que versiones en pub.dev hay en este 2025",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "type": "chat",
+      "response": " 🌐 *Búsqué información actualizada sobre las versiones de pub.dev para el año 2025.*\n\nEn el momento actual, no puedo proporcionar datos exactos sobre futuros eventos, pero te diré que en 2021, la plataforma pub.dev es una biblioteca de paquetes Dart para Flutter. Es posible que siga siendo así en 2025, pero no hay información disponible específica sobre versiones particulares. Podrías consultar la página web de pub.dev o contactar a su equipo de desarrollo para obtener más detalles.",
+      "timestamp": 1763011939680,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763011997574-vt0luic19",
+    "timestamp": 1763011997574,
+    "features": {
+      "wordCount": 8,
+      "sentimentScore": 0,
+      "complexity": 0.34249999999999997,
+      "keywords": [
+        "busca",
+        "internet,",
+        "actrices",
+        "porno",
+        "argentina"
+      ],
+      "timeOfDay": 2,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1763011997574
+    },
+    "input": "busca en internet, 5 actrices porno de argentina",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "type": "chat",
+      "response": "🌐 *Busqué información actualizada en Web Search (múltiples motores), Señor.*\n\n No tengo esa información en los resultados de la búsqueda.",
+      "timestamp": 1763011997573,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 1,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763012141852-3vq7tu1ur",
+    "timestamp": 1763012141852,
+    "features": {
+      "wordCount": 8,
+      "sentimentScore": 0,
+      "complexity": 0.3225,
+      "keywords": [
+        "busca",
+        "internet",
+        "hora",
+        "actual",
+        "peru"
+      ],
+      "timeOfDay": 2,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1763012141852
+    },
+    "input": "busca en internet la hora actual de peru",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "type": "chat",
+      "response": "🌐 *Busqué información actualizada en Sistema (tiempo real), Señor.*\n\n 🌐 *Busqué información actualizada sobre la hora actual de Perú, Señor.*\n\nLa hora ACTUAL en Lima (America/Lima) es: **00:35:30**",
+      "timestamp": 1763012141852,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 0,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
+  },
+  {
+    "id": "1763012172004-ewg62szz5",
+    "timestamp": 1763012172004,
+    "features": {
+      "wordCount": 7,
+      "sentimentScore": 0,
+      "complexity": 0.165,
+      "keywords": [
+        "hora",
+        "actual",
+        "chile"
+      ],
+      "timeOfDay": 2,
+      "dayOfWeek": 4,
+      "userState": "unknown",
+      "previousInteractions": 0,
+      "taskType": "general",
+      "urgency": 0,
+      "domain": "general",
+      "timestamp": 1763012172004
+    },
+    "input": "y la hora actual en chile ?",
+    "output": "Procesando su solicitud, sir...",
+    "context": {
+      "type": "chat",
+      "response": "🌐 *Busqué información actualizada en Sistema (tiempo real), Señor.*\n\n 🌐 *Busqué información actualizada sobre la hora actual de Chile, Señor.*\n\nLa hora ACTUAL en Santiago (America/Santiago) es: **02:36:03**\n\nFecha completa: 13 de noviembre de 2025, 02:36:03",
+      "timestamp": 1763012172003,
+      "action": "quick_response",
+      "predictions": 0
+    },
+    "feedback": {
+      "success": true,
+      "responseTime": 1,
+      "confidence": 0.8,
+      "quality": "excellent"
+    },
+    "confidence": 0.9166666666666666
   }
 ]

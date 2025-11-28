@@ -2,7 +2,6 @@
 // Panel de Chat Mejorado con Markdown y Syntax Highlighting
 
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import ChatMessage from './ChatMessage';
 
 export default function ChatPanel({ socket, connected }) {
@@ -54,13 +53,21 @@ Como siempre, estoy a su disposición. ⚡`,
 
     try {
       // Enviar al backend (Ollama)
-      const response = await axios.post('/api/chat', {
-        message: userMessage.content
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userMessage.content
+        })
       });
+
+      const data = await response.json();
 
       const jarvisMessage = {
         id: Date.now() + 1,
-        content: response.data.response || 'Lo siento, Señor. No pude procesar su solicitud.',
+        content: data.message || 'Lo siento, Señor. No pude procesar su solicitud.',
         isUser: false,
         timestamp: new Date().toISOString()
       };
@@ -74,7 +81,7 @@ Como siempre, estoy a su disposición. ⚡`,
 Lo siento, Señor. Hubo un problema al conectar con el sistema de IA:
 
 \`\`\`
-${error.response?.data?.error || error.message}
+${error.message}
 \`\`\`
 
 Intente nuevamente o verifique que Ollama esté funcionando correctamente.`,

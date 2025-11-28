@@ -157,12 +157,14 @@ const AIBrain = () => {
 
     // Insights actualizados
     socket.on('ai:insights', (data) => {
-      if (data.type === 'insights_response') {
+      if (data && data.type === 'insights_response' && data.data) {
         const { insights } = data.data;
-        setLearningProgress(insights.learningProgress || {});
-        setPatterns(insights.patterns || {});
-        setPredictions(insights.predictions || {});
-        setResources(insights.resources || {});
+        if (insights) {
+          setLearningProgress(insights.learningProgress || {});
+          setPatterns(insights.patterns || {});
+          setPredictions(insights.predictions || {});
+          setResources(insights.resources || {});
+        }
       }
     });
 

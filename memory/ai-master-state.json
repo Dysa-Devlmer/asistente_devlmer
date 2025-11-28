@@ -1,16 +1,101 @@
 {
   "userId": "web-user",
   "globalStats": {
-    "totalInteractions": 0,
-    "successfulInteractions": 0,
-    "totalPredictions": 0,
+    "totalInteractions": 6,
+    "successfulInteractions": 6,
+    "totalPredictions": 6,
     "accuratePredictions": 0,
-    "patternsDetected": 0,
+    "patternsDetected": 9,
     "resourcesPrepared": 0,
     "resourcesUsed": 0,
-    "averageResponseTime": 0,
+    "averageResponseTime": 0.8333333333333334,
     "learningIterations": 4
   },
-  "interactionHistory": [],
-  "timestamp": 1762996493419
+  "interactionHistory": [
+    {
+      "timestamp": 1763011712640,
+      "input": "puedes buscar en internet cualquier dato que te solucite ?",
+      "output": "Procesando su solicitud, sir...",
+      "action": "quick_response",
+      "feedback": {
+        "success": true,
+        "responseTime": 1,
+        "confidence": 0.8,
+        "quality": "excellent"
+      },
+      "responseTime": 2,
+      "predictionsUsed": 0
+    },
+    {
+      "timestamp": 1763011883647,
+      "input": "Hola JARVIS",
+      "output": "Procesando su solicitud, sir...",
+      "action": "quick_response",
+      "feedback": {
+        "success": true,
+        "responseTime": 0,
+        "confidence": 0.8,
+        "quality": "excellent"
+      },
+      "responseTime": 0,
+      "predictionsUsed": 0
+    },
+    {
+      "timestamp": 1763011939680,
+      "input": "dime que versiones en pub.dev hay en este 2025",
+      "output": "Procesando su solicitud, sir...",
+      "action": "quick_response",
+      "feedback": {
+        "success": true,
+        "responseTime": 0,
+        "confidence": 0.8,
+        "quality": "excellent"
+      },
+      "responseTime": 0,
+      "predictionsUsed": 0
+    },
+    {
+      "timestamp": 1763011997574,
+      "input": "busca en internet, 5 actrices porno de argentina",
+      "output": "Procesando su solicitud, sir...",
+      "action": "quick_response",
+      "feedback": {
+        "success": true,
+        "responseTime": 1,
+        "confidence": 0.8,
+        "quality": "excellent"
+      },
+      "responseTime": 1,
+      "predictionsUsed": 0
+    },
+    {
+      "timestamp": 1763012141853,
+      "input": "busca en internet la hora actual de peru",
+      "output": "Procesando su solicitud, sir...",
+      "action": "quick_response",
+      "feedback": {
+        "success": true,
+        "responseTime": 0,
+        "confidence": 0.8,
+        "quality": "excellent"
+      },
+      "responseTime": 1,
+      "predictionsUsed": 0
+    },
+    {
+      "timestamp": 1763012172004,
+      "input": "y la hora actual en chile ?",
+      "output": "Procesando su solicitud, sir...",
+      "action": "quick_response",
+      "feedback": {
+        "success": true,
+        "responseTime": 1,
+        "confidence": 0.8,
+        "quality": "excellent"
+      },
+      "responseTime": 1,
+      "predictionsUsed": 0
+    }
+  ],
+  "timestamp": 1763012189903
 }

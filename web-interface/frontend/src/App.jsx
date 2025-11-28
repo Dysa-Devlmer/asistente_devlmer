@@ -34,7 +34,7 @@ function App() {
 
   // Connect socket
   useEffect(() => {
-    const newSocket = io('http://localhost:3001');
+    const newSocket = io('http://localhost:7777');
     setSocket(newSocket);
 
     newSocket.on('connect', () => {

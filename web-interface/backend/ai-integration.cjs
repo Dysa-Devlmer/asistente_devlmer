@@ -506,6 +506,49 @@ class AIIntegration {
     });
   }
 
+  /**
+   * Registra una interacción del chat en los sistemas de IA
+   * Conecta Intelligent Chat System con AI Master System
+   */
+  async recordInteraction(userId, userMessage, aiResponse) {
+    if (!this.initialized) {
+      this.logger.warn('AI System not initialized, skipping interaction recording');
+      return;
+    }
+
+    try {
+      // Procesar interacción con todos los sistemas de IA
+      const result = await this.aiSystem.processInteraction({
+        input: userMessage,
+        context: {
+          type: 'chat',
+          response: aiResponse,
+          timestamp: Date.now()
+        },
+        userId: userId
+      });
+
+      this.logger.info(`✅ Chat interaction recorded for ${userId}`);
+
+      // Emitir evento de aprendizaje
+      this.io.emit('ai:learning', {
+        type: 'chat_learned',
+        data: {
+          userId,
+          message: userMessage,
+          learned: true,
+          timestamp: Date.now()
+        }
+      });
+
+      return result;
+
+    } catch (error) {
+      this.logger.error('Error recording interaction:', error.message);
+      // No lanzamos error para no interrumpir el flujo del chat
+    }
+  }
+
   // ==========================================================================
   // SHUTDOWN
   // ==========================================================================

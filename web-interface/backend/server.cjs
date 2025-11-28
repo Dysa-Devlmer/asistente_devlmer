@@ -9,6 +9,7 @@ const socketIo = require('socket.io');
 const path = require('path');
 const fs = require('fs-extra');
 const si = require('systeminformation');
+const axios = require('axios');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 // FASE 6 - Automation Engines
@@ -58,6 +59,9 @@ const PerformanceIntegration = require('./performance-integration.cjs');
 // AI Integration - Machine Learning & Intelligence Systems
 const AIIntegration = require('./ai-integration.cjs');
 
+// Intelligent Chat System - Advanced conversational AI with web search
+const IntelligentChatSystem = require('./intelligent-chat-system.cjs');
+
 // Simple logger for engines
 const logger = {
   info: (msg) => console.log(msg),
@@ -78,8 +82,9 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: process.env.REACT_PORT ? `http://localhost:${process.env.REACT_PORT}` : '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
   }
 });
 
@@ -409,6 +414,34 @@ app.post('/api/command', async (req, res) => {
     });
 
     res.status(500).json({ error: error.message });
+  }
+});
+
+// Endpoint de chat AVANZADO con Sistema Inteligente
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { message, model = 'mistral:latest', userId = 'web-user' } = req.body;
+
+    // Usar el sistema inteligente de chat
+    const result = await global.intelligentChat.processMessage(message, userId, model);
+
+    // Emitir respuesta via WebSocket
+    global.io.emit('chat:message', {
+      message,
+      response: result.message,
+      timestamp: new Date().toISOString(),
+      usedWeb: result.usedWeb,
+      webSource: result.webSource,
+      intent: result.intent
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error('Error en chat:', error);
+    res.json({
+      success: false,
+      message: `Lo siento, Señor. Encontré un problema: ${error.message}. Permítame intentarlo de otra manera.`
+    });
   }
 });
 
@@ -1506,6 +1539,16 @@ server.listen(PORT, async () => {
   } catch (error) {
     console.error('❌ Error inicializando AI Systems:', error.message);
   }
+
+  // ============ INTELLIGENT CHAT SYSTEM ============
+  console.log('\n🤖 Initializing Intelligent Chat System...');
+  const intelligentChat = new IntelligentChatSystem(aiIntegration);
+  global.intelligentChat = intelligentChat; // Make available globally
+  console.log('✅ Intelligent Chat System ready');
+  console.log('   🌐 Web Search: Enabled');
+  console.log('   🧠 Contextual Memory: Active');
+  console.log('   🎯 Intent Detection: Online');
+  console.log('   ⚡ APIs: WorldTime, Weather, News');
 
   // Graceful shutdown
   process.on('SIGTERM', async () => {
