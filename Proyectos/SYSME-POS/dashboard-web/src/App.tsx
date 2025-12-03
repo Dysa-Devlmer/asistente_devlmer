@@ -38,6 +38,13 @@ const AnalyticsDashboard = React.lazy(() => import('@/pages/dashboard/AnalyticsD
 const TipsSettingsPage = React.lazy(() => import('@/pages/TipsSettingsPage'));
 const SuppliersPage = React.lazy(() => import('@/pages/SuppliersPage'));
 
+// POS Moderno - Nuevo diseño profesional
+const POSModerno = React.lazy(() => import('@/pages/pos/POSModerno'));
+const TableMapModerno = React.lazy(() => import('@/pages/pos/TableMapModerno'));
+const KitchenDisplayModerno = React.lazy(() => import('@/pages/cocina/KitchenDisplayModerno'));
+const TableMap = React.lazy(() => import('@/pages/pos/TableMap'));
+const KitchenDisplay = React.lazy(() => import('@/pages/pos/KitchenDisplay'));
+
 // Loading spinner component optimizado
 const LoadingSpinner: React.FC<{ message?: string }> = ({ message = 'Cargando...' }) => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -463,6 +470,71 @@ function App() {
                 protected={true}
                 requiredRole="manager"
                 loadingMessage="Cargando gestión de proveedores..."
+              />
+            }
+          />
+
+          {/* POS Moderno - Rutas del nuevo sistema */}
+          <Route
+            path="/pos/terminal"
+            element={
+              <RouteWrapper
+                component={POSModerno}
+                layout="none"
+                protected={true}
+                loginPath="/pos/login"
+                loadingMessage="Cargando terminal POS moderno..."
+              />
+            }
+          />
+
+          <Route
+            path="/pos/mapa"
+            element={
+              <RouteWrapper
+                component={TableMapModerno}
+                layout="none"
+                protected={true}
+                loginPath="/pos/login"
+                loadingMessage="Cargando mapa de mesas..."
+              />
+            }
+          />
+
+          <Route
+            path="/pos/cocina"
+            element={
+              <RouteWrapper
+                component={KitchenDisplayModerno}
+                layout="none"
+                protected={true}
+                loginPath="/pos/login"
+                loadingMessage="Cargando pantalla de cocina..."
+              />
+            }
+          />
+
+          <Route
+            path="/pos/ventas"
+            element={
+              <RouteWrapper
+                component={POSVentas}
+                layout="none"
+                protected={true}
+                loginPath="/pos/login"
+                loadingMessage="Cargando terminal de ventas..."
+              />
+            }
+          />
+
+          <Route
+            path="/kitchen"
+            element={
+              <RouteWrapper
+                component={KitchenDisplayModerno}
+                layout="none"
+                protected={true}
+                loadingMessage="Cargando pantalla de cocina..."
               />
             }
           />

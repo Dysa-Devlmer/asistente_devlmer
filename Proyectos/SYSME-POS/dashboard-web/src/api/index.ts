@@ -29,6 +29,12 @@ export * from './permissionsService';
 export * from './parkedSalesService';
 export * from './pricingTiersService';
 
+// New POS Services (Multi-branch + Kitchen)
+export * from './branchService';
+export * from './ordersService';
+export * from './posService';
+export * from './kitchenService';
+
 // Default export with all services
 import authService from './authService';
 import productsService from './productsService';
@@ -48,6 +54,10 @@ import combosService from './combosService';
 import permissionsService from './permissionsService';
 import parkedSalesService from './parkedSalesService';
 import pricingTiersService from './pricingTiersService';
+import branchService from './branchService';
+import ordersService from './ordersService';
+import posService from './posService';
+import kitchenService from './kitchenService';
 
 export default {
   auth: authService,
@@ -67,5 +77,9 @@ export default {
   combos: combosService,
   permissions: permissionsService,
   parkedSales: parkedSalesService,
-  pricingTiers: pricingTiersService
+  pricingTiers: pricingTiersService,
+  branches: branchService,
+  orders: ordersService,
+  pos: posService,
+  kitchen: kitchenService
 };
