@@ -1,58 +1,58 @@
-# SYSME-POS
+# Asistente Devlmer (JARVIS)
 
-Sistema de Punto de Venta para restaurantes multi-sucursal en Chile.
+Asistente de IA conversacional multicanal.
 
 ## Estructura
 
 ```
-SYSME-POS/
-├── backend/          # API Node.js/Express + SQLite
-├── frontend/         # React + Vite + TypeScript + Tailwind
-├── jarvis/           # Asistente IA (WhatsApp, voz, web)
-├── docs/             # Documentación
-├── .env              # Variables de entorno
-└── docker-compose.yml
+asistente_devlmer/
+├── channels/         # Canales de comunicación
+│   ├── voice/        # Interfaz de voz
+│   ├── webchat/      # Chat web
+│   └── whatsapp/     # WhatsApp Business API
+├── core/             # Núcleo del asistente
+│   ├── conversation-engine.js
+│   ├── decision-engine.js
+│   ├── emotional-intelligence.js
+│   ├── nlp-engine.js
+│   └── personality.js
+├── integrations/     # Integraciones externas
+├── memory/           # Sistema de memoria
+│   ├── continuous-memory.js
+│   ├── memory-advanced.js
+│   └── persistent-memory.js
+├── skills/           # Habilidades
+│   ├── menu-info.js
+│   ├── order-taking.js
+│   └── reservations.js
+└── index.js          # Punto de entrada
 ```
-
-## Requisitos
-
-- Node.js 18+
-- npm 9+
 
 ## Instalación
 
 ```bash
-git clone https://github.com/Dysa-Devlmer/pos_venta.git SYSME-POS
-cd SYSME-POS
 npm install
-cd backend && npm install && cd ..
-cd frontend && npm install && cd ..
 ```
 
-## Ejecutar
+## Uso
 
 ```bash
 npm start
 ```
 
-- **Backend:** http://localhost:3001
-- **Frontend:** http://localhost:5173
+## Canales Disponibles
+
+- **WhatsApp:** Integración con WhatsApp Business API
+- **Voz:** Comandos de voz con TTS/STT
+- **WebChat:** Chat embebido en web
 
 ## Características
 
-- 5 sucursales con terminales independientes
-- Multi-destino cocina (Cocina 1-4, Barra)
-- Sincronización híbrida offline-first
-- Gestión de mesas, pedidos, pagos
-- Sistema de propinas y división de cuentas
-- Reportes y analytics en tiempo real
-- JARVIS: Asistente IA integrado
-
-## Configuración Chile
-
-- Moneda: CLP (sin decimales)
-- IVA: 19%
-- Timezone: America/Santiago
+- Motor de conversación natural
+- Inteligencia emocional
+- Memoria persistente (corto, mediano, largo plazo)
+- Personalidad configurable
+- Multi-canal
 
 ## Licencia
 
