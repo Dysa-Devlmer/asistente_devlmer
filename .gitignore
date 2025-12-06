@@ -23,3 +23,21 @@ Thumbs.db
 # Node/Build (si llegara a usarse)
 node_modules/
 dist/
+
+# Environment files (contain secrets)
+.env
+*.env
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Backend specific
+backend/.env
+backend/data/*.db
+backend/src/database/*.db
+
+# Frontend specific
+frontend/.env
+
