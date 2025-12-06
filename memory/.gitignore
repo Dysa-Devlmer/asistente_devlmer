@@ -1,5 +1,0 @@
-# Ignore test sessions, keep documented ones
-session-2025-11-10-025*.json
-2025-11-10.md
-commands.log
-CURRENT-STATE.json
