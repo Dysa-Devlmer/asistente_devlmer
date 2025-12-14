@@ -42,6 +42,7 @@ export class SyncController {
       return {
         processed: 0,
         errors: 0,
+        pending: 0,
         results: [],
       };
     }
