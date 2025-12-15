@@ -1,0 +1,278 @@
+{
+  "_comment": "Bootstrap API v2.0 - Sample Responses - Iteración 2",
+  "_specification": "docs/ITERACION2-BOOTSTRAP-CATALOGO.md",
+  "_date": "2025-01-15",
+
+  "endpoints": {
+    "catalogo": {
+      "endpoint": "GET /api/bootstrap/catalogo",
+      "query_params": {
+        "sucursal_id": "550e8400-e29b-41d4-a716-446655440000",
+        "page": 1,
+        "limit": 50
+      },
+      "request_example": "curl -X GET 'http://localhost:3000/api/bootstrap/catalogo?sucursal_id=550e8400-e29b-41d4-a716-446655440000&page=1&limit=50'",
+      "response_headers": {
+        "x-bootstrap-version": "2.0.0",
+        "cache-control": "public, max-age=300"
+      },
+      "response_body": {
+        "bootstrap_version": "2.0.0",
+        "generated_at": "2025-01-15T14:30:00.000Z",
+        "data": {
+          "sucursal_id": "550e8400-e29b-41d4-a716-446655440000",
+          "pagination": {
+            "page": 1,
+            "limit": 50,
+            "total_items": 523,
+            "total_pages": 11,
+            "has_next": true,
+            "has_prev": false
+          },
+          "catalogo": {
+            "productos": [
+              {
+                "id": "650e8400-e29b-41d4-a716-446655440001",
+                "codigo": "PROD001",
+                "codigo_barra": "7501234567890",
+                "nombre": "Producto Ejemplo",
+                "descripcion": "Descripción del producto",
+                "categoria_id": "750e8400-e29b-41d4-a716-446655440002",
+                "precio_venta": 150.00,
+                "precio_compra": 100.00,
+                "stock_actual": 25,
+                "stock_minimo": 5,
+                "unidad_medida": "UNIDAD",
+                "impuesto_id": "850e8400-e29b-41d4-a716-446655440003",
+                "imagen_url": "https://cdn.example.com/productos/prod001.jpg",
+                "esta_activo": true,
+                "permite_venta_sin_stock": false,
+                "es_servicio": false,
+                "requiere_autorizacion": false,
+                "created_at": "2025-01-10T10:00:00.000Z",
+                "updated_at": "2025-01-15T12:00:00.000Z"
+              }
+            ],
+            "categorias": [
+              {
+                "id": "750e8400-e29b-41d4-a716-446655440002",
+                "codigo": "CAT001",
+                "nombre": "Bebidas",
+                "descripcion": "Bebidas y refrescos",
+                "categoria_padre_id": null,
+                "orden": 1,
+                "esta_activa": true,
+                "created_at": "2025-01-01T10:00:00.000Z",
+                "updated_at": "2025-01-01T10:00:00.000Z"
+              }
+            ],
+            "impuestos": [
+              {
+                "id": "850e8400-e29b-41d4-a716-446655440003",
+                "codigo": "IVA19",
+                "nombre": "IVA 19%",
+                "porcentaje": 19.00,
+                "tipo": "IVA",
+                "esta_activo": true,
+                "created_at": "2025-01-01T10:00:00.000Z",
+                "updated_at": "2025-01-01T10:00:00.000Z"
+              }
+            ],
+            "formas_pago": [
+              {
+                "id": "950e8400-e29b-41d4-a716-446655440004",
+                "codigo": "EFECTIVO",
+                "nombre": "Efectivo",
+                "tipo": "CASH",
+                "requiere_autorizacion": false,
+                "abre_cajon": true,
+                "esta_activa": true,
+                "created_at": "2025-01-01T10:00:00.000Z",
+                "updated_at": "2025-01-01T10:00:00.000Z"
+              }
+            ]
+          }
+        }
+      }
+    },
+
+    "empleados": {
+      "endpoint": "GET /api/bootstrap/empleados",
+      "query_params": {
+        "sucursal_id": "550e8400-e29b-41d4-a716-446655440000",
+        "page": 1,
+        "limit": 50
+      },
+      "request_example": "curl -X GET 'http://localhost:3000/api/bootstrap/empleados?sucursal_id=550e8400-e29b-41d4-a716-446655440000'",
+      "response_headers": {
+        "x-bootstrap-version": "2.0.0",
+        "cache-control": "public, max-age=300"
+      },
+      "response_body": {
+        "bootstrap_version": "2.0.0",
+        "generated_at": "2025-01-15T14:30:00.000Z",
+        "data": {
+          "sucursal_id": "550e8400-e29b-41d4-a716-446655440000",
+          "pagination": {
+            "page": 1,
+            "limit": 50,
+            "total_items": 12,
+            "total_pages": 1,
+            "has_next": false,
+            "has_prev": false
+          },
+          "empleados": [
+            {
+              "id": "a50e8400-e29b-41d4-a716-446655440005",
+              "codigo": "EMP001",
+              "nombre": "Juan",
+              "apellido": "Pérez",
+              "nombre_completo": "Juan Pérez",
+              "email": "juan.perez@empresa.com",
+              "telefono": "+56912345678",
+              "rol_id": "b50e8400-e29b-41d4-a716-446655440006",
+              "rol_nombre": "Cajero",
+              "sucursal_id": "550e8400-e29b-41d4-a716-446655440000",
+              "esta_activo": true,
+              "puede_abrir_caja": true,
+              "puede_hacer_devoluciones": false,
+              "puede_aplicar_descuentos": true,
+              "descuento_maximo_porcentaje": 10.00,
+              "requiere_autorizacion_supervisor": false,
+              "permisos": [
+                "VENTA_CREAR",
+                "VENTA_VER",
+                "PRODUCTO_VER",
+                "CAJA_ABRIR",
+                "CAJA_CERRAR"
+              ],
+              "created_at": "2025-01-05T10:00:00.000Z",
+              "updated_at": "2025-01-10T15:30:00.000Z"
+            }
+          ]
+        }
+      },
+      "notes": "CAMPOS SENSIBLES EXCLUIDOS: password_hash, pin_hash, token_sesion"
+    },
+
+    "delta": {
+      "endpoint": "GET /api/bootstrap/delta",
+      "query_params": {
+        "sucursal_id": "550e8400-e29b-41d4-a716-446655440000",
+        "since": "2025-01-15T10:00:00.000Z"
+      },
+      "request_example": "curl -X GET 'http://localhost:3000/api/bootstrap/delta?sucursal_id=550e8400-e29b-41d4-a716-446655440000&since=2025-01-15T10:00:00.000Z'",
+      "response_headers": {
+        "x-bootstrap-version": "2.0.0",
+        "cache-control": "public, max-age=300"
+      },
+      "response_body": {
+        "bootstrap_version": "2.0.0",
+        "generated_at": "2025-01-15T14:30:00.000Z",
+        "data": {
+          "sucursal_id": "550e8400-e29b-41d4-a716-446655440000",
+          "since": "2025-01-15T10:00:00.000Z",
+          "until": "2025-01-15T14:30:00.000Z",
+          "total_changes": 5,
+          "changes": [
+            {
+              "op": "update",
+              "entity": "producto",
+              "id": "650e8400-e29b-41d4-a716-446655440001",
+              "changed_at": "2025-01-15T12:00:00.000Z",
+              "payload": {
+                "id": "650e8400-e29b-41d4-a716-446655440001",
+                "codigo": "PROD001",
+                "nombre": "Producto Actualizado",
+                "precio_venta": 175.00,
+                "stock_actual": 30,
+                "esta_activo": true,
+                "updated_at": "2025-01-15T12:00:00.000Z"
+              }
+            },
+            {
+              "op": "insert",
+              "entity": "producto",
+              "id": "650e8400-e29b-41d4-a716-446655440010",
+              "changed_at": "2025-01-15T13:00:00.000Z",
+              "payload": {
+                "id": "650e8400-e29b-41d4-a716-446655440010",
+                "codigo": "PROD010",
+                "nombre": "Producto Nuevo",
+                "precio_venta": 200.00,
+                "stock_actual": 10,
+                "esta_activo": true,
+                "created_at": "2025-01-15T13:00:00.000Z",
+                "updated_at": "2025-01-15T13:00:00.000Z"
+              }
+            },
+            {
+              "op": "delete",
+              "entity": "producto",
+              "id": "650e8400-e29b-41d4-a716-446655440007",
+              "changed_at": "2025-01-15T14:00:00.000Z",
+              "payload": {
+                "id": "650e8400-e29b-41d4-a716-446655440007",
+                "codigo": "PROD007",
+                "esta_activo": false,
+                "updated_at": "2025-01-15T14:00:00.000Z"
+              }
+            },
+            {
+              "op": "update",
+              "entity": "empleado",
+              "id": "a50e8400-e29b-41d4-a716-446655440005",
+              "changed_at": "2025-01-15T11:30:00.000Z",
+              "payload": {
+                "id": "a50e8400-e29b-41d4-a716-446655440005",
+                "codigo": "EMP001",
+                "nombre_completo": "Juan Pérez",
+                "puede_aplicar_descuentos": true,
+                "descuento_maximo_porcentaje": 15.00,
+                "updated_at": "2025-01-15T11:30:00.000Z"
+              }
+            },
+            {
+              "op": "update",
+              "entity": "categoria",
+              "id": "750e8400-e29b-41d4-a716-446655440002",
+              "changed_at": "2025-01-15T14:15:00.000Z",
+              "payload": {
+                "id": "750e8400-e29b-41d4-a716-446655440002",
+                "codigo": "CAT001",
+                "nombre": "Bebidas y Refrescos",
+                "updated_at": "2025-01-15T14:15:00.000Z"
+              }
+            }
+          ]
+        }
+      },
+      "notes": "Soft-deletes: op='delete' + esta_activo=false. Sin paginación. Ordenamiento: changed_at ASC."
+    }
+  },
+
+  "sql_queries": {
+    "catalogo_productos": "SELECT id, codigo, codigo_barra, nombre, descripcion, categoria_id, precio_venta, precio_compra, stock_actual, stock_minimo, unidad_medida, impuesto_id, imagen_url, esta_activo, permite_venta_sin_stock, es_servicio, requiere_autorizacion, created_at, updated_at FROM producto WHERE sucursal_id = ? AND esta_activo = true ORDER BY codigo ASC, nombre ASC LIMIT ? OFFSET ?",
+
+    "catalogo_categorias": "SELECT id, codigo, nombre, descripcion, categoria_padre_id, orden, esta_activa, created_at, updated_at FROM categoria WHERE sucursal_id = ? AND esta_activa = true ORDER BY orden ASC, nombre ASC",
+
+    "empleados": "SELECT e.id, e.codigo, e.nombre, e.apellido, CONCAT(e.nombre, ' ', e.apellido) as nombre_completo, e.email, e.telefono, e.rol_id, r.nombre as rol_nombre, e.sucursal_id, e.esta_activo, e.puede_abrir_caja, e.puede_hacer_devoluciones, e.puede_aplicar_descuentos, e.descuento_maximo_porcentaje, e.requiere_autorizacion_supervisor, e.created_at, e.updated_at FROM empleado e INNER JOIN rol r ON e.rol_id = r.id WHERE e.sucursal_id = ? AND e.esta_activo = true ORDER BY e.apellido ASC, e.nombre ASC LIMIT ? OFFSET ?",
+
+    "delta_producto_inserts": "SELECT * FROM producto WHERE sucursal_id = ? AND created_at > ? AND created_at = updated_at ORDER BY created_at ASC",
+
+    "delta_producto_updates": "SELECT * FROM producto WHERE sucursal_id = ? AND updated_at > ? AND created_at < updated_at AND esta_activo = true ORDER BY updated_at ASC",
+
+    "delta_producto_deletes": "SELECT id, codigo, esta_activo, updated_at FROM producto WHERE sucursal_id = ? AND updated_at > ? AND esta_activo = false ORDER BY updated_at ASC"
+  },
+
+  "validation_rules": {
+    "pagination": {
+      "page_min": 1,
+      "limit_min": 1,
+      "limit_max": 100,
+      "limit_default": 50
+    },
+    "uuid_validation": "All IDs must be valid UUID v4",
+    "timestamp_format": "ISO 8601 (example: 2025-01-15T10:00:00.000Z)"
+  }
+}
