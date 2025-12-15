@@ -1,0 +1,49 @@
+
+> sysme-backend@2.0.0 test
+> jest bootstrap
+
+PASS src/modules/bootstrap/services/bootstrap.service.spec.ts
+  BootstrapService
+    getMeta
+      √ debería retornar metadata con estructura correcta (14 ms)
+      √ debería lanzar NotFoundException si sucursal no existe (9 ms)
+      √ debería incluir bootstrap_version y generated_at (2 ms)
+    getSucursal
+      √ debería retornar sucursal con estructura correcta (1 ms)
+      √ debería lanzar NotFoundException si sucursal no existe (2 ms)
+      √ debería llamar al repository con ID correcto (1 ms)
+    getDispositivo
+      √ debería retornar dispositivo con estructura correcta (1 ms)
+      √ debería lanzar NotFoundException si dispositivo no existe (1 ms)
+      √ debería llamar al repository con IDs correctos (1 ms)
+    Estructura de respuesta
+      √ todas las respuestas deben incluir bootstrap_version (2 ms)
+      √ todas las respuestas deben incluir generated_at en formato ISO 8601 (1 ms)
+
+PASS src/modules/bootstrap/controllers/bootstrap.controller.spec.ts
+  BootstrapController
+    GET /api/bootstrap/meta
+      √ debería retornar metadata correctamente (14 ms)
+      √ debería lanzar NotFoundException si sucursal no existe (9 ms)
+      √ debería retornar estructura con bootstrap_version (1 ms)
+      √ debería retornar catalog_version en data (2 ms)
+      √ debería retornar requires_full_sync como false (Iteración 1) (1 ms)
+    GET /api/bootstrap/sucursal/:id
+      √ debería retornar sucursal correctamente (1 ms)
+      √ debería lanzar NotFoundException si sucursal no existe (1 ms)
+      √ debería retornar estructura con bootstrap_version y generated_at (1 ms)
+      √ debería retornar datos de sucursal sin campos sensibles (2 ms)
+    GET /api/bootstrap/dispositivo
+      √ debería retornar dispositivo correctamente (1 ms)
+      √ debería lanzar NotFoundException si dispositivo no existe (1 ms)
+      √ debería retornar estructura con bootstrap_version y generated_at (1 ms)
+      √ debería retornar datos de dispositivo sin campos sensibles (1 ms)
+      √ debería validar que el dispositivo pertenece a la sucursal (1 ms)
+    Contrato de API - Headers y estructura
+      √ todas las respuestas deben tener la estructura base correcta (1 ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       26 passed, 26 total
+Snapshots:   0 total
+Time:        3.507 s
+Ran all test suites matching /bootstrap/i.

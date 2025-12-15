@@ -1,55 +1,25 @@
-# Node.js
-node_modules/
-npm-debug.log*
-*.log
-
-# Environment
-.env
-.env.local
-.env.*.local
-
-# Build outputs
-dist/
-build/
-coverage/
-
-# Database files
-*.db
-*.db-journal
-*.db-shm
-*.db-wal
-data/memory-db.json
-data/tasks.json
-
-# AI Runtime Data (generado por sistemas de IA)
-memory/ai-master-state.json
-memory/experience-buffer.json
-memory/knowledge-base.json
-memory/q-learning-agent.json
-memory/user-*-history.json
-memory/*.db-shm
-memory/*.db-wal
-
-# Claude Settings
-.claude/settings.local.json
-
-# IDE
-.vscode/*
-!.vscode/extensions.json
-.idea/
-*.swp
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
+# Archivos ignorados
+# Bases de datos y sensibles
+posventa.db
+posventa-*.db
+backups/
+certificates/
 logs/
-*.log
 
-# Temp
-temp/
-tmp/
-*.tmp
-NUL
-J.A.R.V.I.S/
+# Runtime
+writable/cache/
+writable/logs/
+writable/sessions/
+
+# Dependencias
+vendor/
+
+# SO/editores
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
+
+# Node/Build (si llegara a usarse)
+node_modules/
+dist/
