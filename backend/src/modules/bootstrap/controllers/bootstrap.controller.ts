@@ -11,14 +11,24 @@
  * Headers obligatorios en TODOS los endpoints:
  * - x-bootstrap-version: 2.0.0
  * - cache-control: public, max-age=300
+ *
+ * CONSOLIDACIÓN:
+ * - Usa TypedErrors para manejo estandarizado
+ * - Logging estructurado con request_id
+ * - Propagación de errores a error-handler middleware
  */
 
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { CatalogoService } from '../services/catalogo.service';
 import { EmpleadoService } from '../services/empleado.service';
 import { DeltaService } from '../services/delta.service';
 import { BOOTSTRAP_VERSION } from '../dto/bootstrap-response.dto';
 import { validate as isUUID } from 'uuid';
+import {
+  InvalidUUIDError,
+  MissingRequiredParamError,
+} from '../../../common/errors/typed-errors';
+import { logger } from '../../../common/logging/structured-logger';
 
 export class BootstrapController {
   private catalogoService: CatalogoService;
@@ -44,32 +54,29 @@ export class BootstrapController {
    * - Headers: x-bootstrap-version, cache-control
    * - Body: CatalogoResponseDto
    */
-  async getCatalogo(req: Request, res: Response): Promise<void> {
+  async getCatalogo(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       // 1. Validar query parameters
       const { sucursal_id, page, limit } = req.query;
 
       if (!sucursal_id) {
-        res.status(400).json({
-          statusCode: 400,
-          message: 'sucursal_id es requerido',
-          error: 'Bad Request',
-        });
-        return;
+        throw new MissingRequiredParamError('sucursal_id');
       }
 
       if (!isUUID(sucursal_id as string)) {
-        res.status(400).json({
-          statusCode: 400,
-          message: 'sucursal_id debe ser un UUID válido',
-          error: 'Bad Request',
-        });
-        return;
+        throw new InvalidUUIDError('sucursal_id', sucursal_id as string);
       }
 
       // 2. Parsear paginación (defaults aplicados en service)
       const pageNum = page ? parseInt(page as string, 10) : 1;
       const limitNum = limit ? parseInt(limit as string, 10) : 50;
+
+      logger.info('GET /api/bootstrap/catalogo', {
+        request_id: req.request_id,
+        sucursal_id,
+        page: pageNum,
+        limit: limitNum,
+      });
 
       // 3. Llamar al servicio
       const response = await this.catalogoService.getCatalogo(
@@ -85,7 +92,11 @@ export class BootstrapController {
       // 5. Enviar response
       res.status(200).json(response);
     } catch (error: any) {
-      this.handleError(res, error);
+      logger.error('Error in getCatalogo', {
+        request_id: req.request_id,
+        error_message: error.message,
+      }, error);
+      next(error); // Propagar a error-handler middleware
     }
   }
 
@@ -102,32 +113,29 @@ export class BootstrapController {
    * - Headers: x-bootstrap-version, cache-control
    * - Body: EmpleadoResponseDto
    */
-  async getEmpleados(req: Request, res: Response): Promise<void> {
+  async getEmpleados(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       // 1. Validar query parameters
       const { sucursal_id, page, limit } = req.query;
 
       if (!sucursal_id) {
-        res.status(400).json({
-          statusCode: 400,
-          message: 'sucursal_id es requerido',
-          error: 'Bad Request',
-        });
-        return;
+        throw new MissingRequiredParamError('sucursal_id');
       }
 
       if (!isUUID(sucursal_id as string)) {
-        res.status(400).json({
-          statusCode: 400,
-          message: 'sucursal_id debe ser un UUID válido',
-          error: 'Bad Request',
-        });
-        return;
+        throw new InvalidUUIDError('sucursal_id', sucursal_id as string);
       }
 
       // 2. Parsear paginación
       const pageNum = page ? parseInt(page as string, 10) : 1;
       const limitNum = limit ? parseInt(limit as string, 10) : 50;
+
+      logger.info('GET /api/bootstrap/empleados', {
+        request_id: req.request_id,
+        sucursal_id,
+        page: pageNum,
+        limit: limitNum,
+      });
 
       // 3. Llamar al servicio
       const response = await this.empleadoService.getEmpleados(
@@ -143,7 +151,11 @@ export class BootstrapController {
       // 5. Enviar response
       res.status(200).json(response);
     } catch (error: any) {
-      this.handleError(res, error);
+      logger.error('Error in getEmpleados', {
+        request_id: req.request_id,
+        error_message: error.message,
+      }, error);
+      next(error);
     }
   }
 
@@ -159,37 +171,28 @@ export class BootstrapController {
    * - Headers: x-bootstrap-version, cache-control
    * - Body: DeltaResponseDto
    */
-  async getDelta(req: Request, res: Response): Promise<void> {
+  async getDelta(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       // 1. Validar query parameters
       const { sucursal_id, since } = req.query;
 
       if (!sucursal_id) {
-        res.status(400).json({
-          statusCode: 400,
-          message: 'sucursal_id es requerido',
-          error: 'Bad Request',
-        });
-        return;
+        throw new MissingRequiredParamError('sucursal_id');
       }
 
       if (!isUUID(sucursal_id as string)) {
-        res.status(400).json({
-          statusCode: 400,
-          message: 'sucursal_id debe ser un UUID válido',
-          error: 'Bad Request',
-        });
-        return;
+        throw new InvalidUUIDError('sucursal_id', sucursal_id as string);
       }
 
       if (!since) {
-        res.status(400).json({
-          statusCode: 400,
-          message: 'since es requerido',
-          error: 'Bad Request',
-        });
-        return;
+        throw new MissingRequiredParamError('since');
       }
+
+      logger.info('GET /api/bootstrap/delta', {
+        request_id: req.request_id,
+        sucursal_id,
+        since,
+      });
 
       // 2. Llamar al servicio (validación de ISO 8601 en service)
       const response = await this.deltaService.getDelta(
@@ -204,46 +207,11 @@ export class BootstrapController {
       // 4. Enviar response
       res.status(200).json(response);
     } catch (error: any) {
-      this.handleError(res, error);
+      logger.error('Error in getDelta', {
+        request_id: req.request_id,
+        error_message: error.message,
+      }, error);
+      next(error);
     }
-  }
-
-  /**
-   * Manejador de errores centralizado
-   */
-  private handleError(res: Response, error: any): void {
-    console.error('Bootstrap API Error:', error);
-
-    // Error de validación (400)
-    if (
-      error.message.includes('debe ser') ||
-      error.message.includes('es requerido') ||
-      error.message.includes('ISO 8601') ||
-      error.message.includes('UUID')
-    ) {
-      res.status(400).json({
-        statusCode: 400,
-        message: error.message,
-        error: 'Bad Request',
-      });
-      return;
-    }
-
-    // Error de recurso no encontrado (404)
-    if (error.message.includes('no encontrada') || error.message.includes('no existe')) {
-      res.status(404).json({
-        statusCode: 404,
-        message: error.message,
-        error: 'Not Found',
-      });
-      return;
-    }
-
-    // Error interno del servidor (500)
-    res.status(500).json({
-      statusCode: 500,
-      message: 'Error interno del servidor',
-      error: 'Internal Server Error',
-    });
   }
 }
