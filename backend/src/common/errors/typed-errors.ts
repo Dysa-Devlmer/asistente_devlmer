@@ -31,6 +31,30 @@ export enum ErrorCode {
   // 403 - Forbidden
   INSUFFICIENT_PERMISSIONS = 'INSUFFICIENT_PERMISSIONS',
 
+  // 404 - Not Found (Pagos)
+  PAGO_NOT_FOUND = 'PAGO_NOT_FOUND',
+  VENTA_NOT_FOUND = 'VENTA_NOT_FOUND',
+  FORMA_PAGO_NOT_FOUND = 'FORMA_PAGO_NOT_FOUND',
+
+  // 409 - Conflict (Pagos business rules)
+  PAGO_ALREADY_PROCESSED = 'PAGO_ALREADY_PROCESSED',
+  PAGO_ALREADY_CANCELLED = 'PAGO_ALREADY_CANCELLED',
+  INVALID_PAYMENT_STATE = 'INVALID_PAYMENT_STATE',
+  INVALID_STATE_TRANSITION = 'INVALID_STATE_TRANSITION',
+  CANNOT_CANCEL_APPROVED = 'CANNOT_CANCEL_APPROVED',
+
+  // 400 - Bad Request (Pagos)
+  INVALID_AMOUNT = 'INVALID_AMOUNT',
+  INSUFFICIENT_CASH = 'INSUFFICIENT_CASH',
+  INVALID_PAYMENT_METHOD = 'INVALID_PAYMENT_METHOD',
+  TOKEN_MISMATCH = 'TOKEN_MISMATCH',
+
+  // 500 - External Service Error (Webpay)
+  WEBPAY_INIT_ERROR = 'WEBPAY_INIT_ERROR',
+  WEBPAY_CONFIRM_ERROR = 'WEBPAY_CONFIRM_ERROR',
+  WEBPAY_REVERSAL_ERROR = 'WEBPAY_REVERSAL_ERROR',
+  WEBPAY_TIMEOUT = 'WEBPAY_TIMEOUT',
+
   // 429 - Too Many Requests
   RATE_LIMIT_EXCEEDED = 'RATE_LIMIT_EXCEEDED',
 
@@ -347,6 +371,210 @@ export class InsufficientPermissionsError extends TypedError {
       ErrorCode.INSUFFICIENT_PERMISSIONS,
       403,
       { ...metadata, requiredPermission },
+      true
+    );
+  }
+}
+
+/**
+ * Errores 404 - Not Found (Pagos)
+ */
+export class PagoNotFoundError extends TypedError {
+  constructor(pagoId: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Pago con ID ${pagoId} no encontrado`,
+      ErrorCode.PAGO_NOT_FOUND,
+      404,
+      { ...metadata, pagoId },
+      true
+    );
+  }
+}
+
+export class VentaNotFoundError extends TypedError {
+  constructor(ventaId: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Venta con ID ${ventaId} no encontrada`,
+      ErrorCode.VENTA_NOT_FOUND,
+      404,
+      { ...metadata, ventaId },
+      true
+    );
+  }
+}
+
+export class FormaPagoNotFoundError extends TypedError {
+  constructor(formaPagoId: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Forma de pago con ID ${formaPagoId} no encontrada`,
+      ErrorCode.FORMA_PAGO_NOT_FOUND,
+      404,
+      { ...metadata, formaPagoId },
+      true
+    );
+  }
+}
+
+/**
+ * Errores 409 - Conflict (Reglas de negocio de Pagos)
+ */
+export class PagoAlreadyProcessedError extends TypedError {
+  constructor(pagoId: string, estadoActual: string, metadata: ErrorMetadata = {}) {
+    super(
+      `El pago ${pagoId} ya fue procesado (estado: ${estadoActual}). No se puede volver a procesar.`,
+      ErrorCode.PAGO_ALREADY_PROCESSED,
+      409,
+      { ...metadata, pagoId, estadoActual },
+      true
+    );
+  }
+}
+
+export class PagoAlreadyCancelledError extends TypedError {
+  constructor(pagoId: string, metadata: ErrorMetadata = {}) {
+    super(
+      `El pago ${pagoId} ya está anulado. No se puede modificar un pago anulado.`,
+      ErrorCode.PAGO_ALREADY_CANCELLED,
+      409,
+      { ...metadata, pagoId },
+      true
+    );
+  }
+}
+
+export class InvalidPaymentStateError extends TypedError {
+  constructor(pagoId: string, estadoActual: string, estadoRequerido: string, metadata: ErrorMetadata = {}) {
+    super(
+      `El pago ${pagoId} está en estado ${estadoActual}, se requiere estado ${estadoRequerido}`,
+      ErrorCode.INVALID_PAYMENT_STATE,
+      409,
+      { ...metadata, pagoId, estadoActual, estadoRequerido },
+      true
+    );
+  }
+}
+
+export class InvalidStateTransitionError extends TypedError {
+  constructor(estadoActual: string, estadoNuevo: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Transición de estado inválida: ${estadoActual} -> ${estadoNuevo}`,
+      ErrorCode.INVALID_STATE_TRANSITION,
+      409,
+      { ...metadata, estadoActual, estadoNuevo },
+      true
+    );
+  }
+}
+
+export class CannotCancelApprovedError extends TypedError {
+  constructor(pagoId: string, motivo: string, metadata: ErrorMetadata = {}) {
+    super(
+      `No se puede anular el pago aprobado ${pagoId}: ${motivo}`,
+      ErrorCode.CANNOT_CANCEL_APPROVED,
+      409,
+      { ...metadata, pagoId, motivo },
+      true
+    );
+  }
+}
+
+/**
+ * Errores 400 - Bad Request (Pagos)
+ */
+export class InvalidAmountError extends TypedError {
+  constructor(monto: number, motivo: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Monto inválido (${monto}): ${motivo}`,
+      ErrorCode.INVALID_AMOUNT,
+      400,
+      { ...metadata, monto, motivo },
+      true
+    );
+  }
+}
+
+export class InsufficientCashError extends TypedError {
+  constructor(montoRequerido: number, montoRecibido: number, metadata: ErrorMetadata = {}) {
+    super(
+      `Efectivo insuficiente. Se requiere $${montoRequerido}, se recibió $${montoRecibido}`,
+      ErrorCode.INSUFFICIENT_CASH,
+      400,
+      { ...metadata, montoRequerido, montoRecibido },
+      true
+    );
+  }
+}
+
+export class InvalidPaymentMethodError extends TypedError {
+  constructor(metodo: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Método de pago inválido: ${metodo}`,
+      ErrorCode.INVALID_PAYMENT_METHOD,
+      400,
+      { ...metadata, metodo },
+      true
+    );
+  }
+}
+
+export class TokenMismatchError extends TypedError {
+  constructor(metadata: ErrorMetadata = {}) {
+    super(
+      'El token Webpay no coincide con el pago registrado',
+      ErrorCode.TOKEN_MISMATCH,
+      400,
+      metadata,
+      true
+    );
+  }
+}
+
+/**
+ * Errores 500 - External Service Error (Webpay)
+ */
+export class WebpayInitError extends TypedError {
+  constructor(errorMessage: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Error al iniciar transacción Webpay: ${errorMessage}`,
+      ErrorCode.WEBPAY_INIT_ERROR,
+      500,
+      metadata,
+      true
+    );
+  }
+}
+
+export class WebpayConfirmError extends TypedError {
+  constructor(errorMessage: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Error al confirmar transacción Webpay: ${errorMessage}`,
+      ErrorCode.WEBPAY_CONFIRM_ERROR,
+      500,
+      metadata,
+      true
+    );
+  }
+}
+
+export class WebpayReversalError extends TypedError {
+  constructor(errorMessage: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Error al reversar transacción Webpay: ${errorMessage}`,
+      ErrorCode.WEBPAY_REVERSAL_ERROR,
+      500,
+      metadata,
+      true
+    );
+  }
+}
+
+export class WebpayTimeoutError extends TypedError {
+  constructor(timeoutMs: number, metadata: ErrorMetadata = {}) {
+    super(
+      `Timeout esperando respuesta de Webpay (${timeoutMs}ms)`,
+      ErrorCode.WEBPAY_TIMEOUT,
+      500,
+      { ...metadata, timeoutMs },
       true
     );
   }
