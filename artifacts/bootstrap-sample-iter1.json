@@ -1,0 +1,165 @@
+{
+  "iteration": 1,
+  "date": "2025-01-15",
+  "description": "Sample responses for Bootstrap API Iteration 1 endpoints",
+  "endpoints": {
+    "meta": {
+      "method": "GET",
+      "url": "/api/bootstrap/meta?sucursal_id=123e4567-e89b-12d3-a456-426614174000",
+      "headers": {
+        "x-bootstrap-version": "1.0.0",
+        "cache-control": "public, max-age=300",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "response": {
+        "bootstrap_version": "1.0.0",
+        "generated_at": "2025-01-15T12:00:00.000Z",
+        "data": {
+          "sucursal_id": "123e4567-e89b-12d3-a456-426614174000",
+          "catalog_version": "BOOTSTRAP_V1",
+          "server_timestamp": "2025-01-15T12:00:00.000Z",
+          "requires_full_sync": false
+        }
+      },
+      "notes": [
+        "catalog_version es constante en Iteración 1",
+        "requires_full_sync es solo informativo, NO dispara sync automático"
+      ]
+    },
+    "sucursal": {
+      "method": "GET",
+      "url": "/api/bootstrap/sucursal/123e4567-e89b-12d3-a456-426614174000",
+      "headers": {
+        "x-bootstrap-version": "1.0.0",
+        "cache-control": "public, max-age=300",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "response": {
+        "bootstrap_version": "1.0.0",
+        "generated_at": "2025-01-15T12:00:00.000Z",
+        "data": {
+          "id": "123e4567-e89b-12d3-a456-426614174000",
+          "codigo": "SUC001",
+          "nombre": "Sucursal Centro",
+          "rut": "76.123.456-7",
+          "direccion": "Av. Principal 123, Santiago Centro",
+          "telefono": "+56912345678",
+          "email": "centro@sysme.cl",
+          "timezone": "America/Santiago",
+          "esta_activa": true,
+          "configuracion": {
+            "impuestos": {
+              "iva": 19
+            },
+            "horario": {
+              "apertura": "09:00",
+              "cierre": "22:00"
+            }
+          }
+        }
+      },
+      "sql_query": "SELECT id, codigo, nombre, rut, direccion, telefono, email, timezone, esta_activa, configuracion FROM sucursal WHERE id = ? AND esta_activa = true LIMIT 1;",
+      "notes": [
+        "NO incluye campos sensibles (password_hash, etc.)",
+        "configuracion es JSONB en PostgreSQL"
+      ]
+    },
+    "dispositivo": {
+      "method": "GET",
+      "url": "/api/bootstrap/dispositivo?sucursal_id=123e4567-e89b-12d3-a456-426614174000&dispositivo_id=987fcdeb-51a2-43e7-9876-543210fedcba",
+      "headers": {
+        "x-bootstrap-version": "1.0.0",
+        "cache-control": "public, max-age=300",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "response": {
+        "bootstrap_version": "1.0.0",
+        "generated_at": "2025-01-15T12:00:00.000Z",
+        "data": {
+          "id": "987fcdeb-51a2-43e7-9876-543210fedcba",
+          "sucursal_id": "123e4567-e89b-12d3-a456-426614174000",
+          "codigo": "POS-01",
+          "nombre": "Caja Principal",
+          "tipo": "CAJA",
+          "dispositivo_info": {
+            "ip": "192.168.1.100",
+            "mac": "AA:BB:CC:DD:EE:FF",
+            "user_agent": "SYSME-POS/1.0.0",
+            "platform": "Android 12",
+            "screen_resolution": "1920x1080"
+          },
+          "esta_activo": true,
+          "ultima_sincronizacion": "2025-01-15T11:30:00.000Z",
+          "version_app": "1.0.0"
+        }
+      },
+      "sql_query": "SELECT id, sucursal_id, codigo, nombre, tipo, dispositivo_info, esta_activo, ultima_sincronizacion, version_app FROM dispositivo WHERE sucursal_id = ? AND id = ? AND esta_activo = true LIMIT 1;",
+      "notes": [
+        "tipo puede ser: CAJA, COMANDERO, COCINA, BARRA",
+        "dispositivo_info es JSONB en PostgreSQL",
+        "NO incluye campos sensibles (auth_token, etc.)"
+      ]
+    }
+  },
+  "error_responses": {
+    "404_sucursal_not_found": {
+      "statusCode": 404,
+      "message": "Sucursal con ID 123e4567-e89b-12d3-a456-426614174000 no encontrada o inactiva",
+      "error": "Not Found"
+    },
+    "404_dispositivo_not_found": {
+      "statusCode": 404,
+      "message": "Dispositivo con ID 987fcdeb-51a2-43e7-9876-543210fedcba no encontrado en sucursal 123e4567-e89b-12d3-a456-426614174000 o inactivo",
+      "error": "Not Found"
+    },
+    "400_invalid_uuid": {
+      "statusCode": 400,
+      "message": "Validation failed (uuid is expected)",
+      "error": "Bad Request"
+    }
+  },
+  "curl_examples": {
+    "meta": "curl -X GET 'http://localhost:3000/api/bootstrap/meta?sucursal_id=123e4567-e89b-12d3-a456-426614174000' -H 'Accept: application/json' -v",
+    "sucursal": "curl -X GET 'http://localhost:3000/api/bootstrap/sucursal/123e4567-e89b-12d3-a456-426614174000' -H 'Accept: application/json' -v",
+    "dispositivo": "curl -X GET 'http://localhost:3000/api/bootstrap/dispositivo?sucursal_id=123e4567-e89b-12d3-a456-426614174000&dispositivo_id=987fcdeb-51a2-43e7-9876-543210fedcba' -H 'Accept: application/json' -v"
+  },
+  "sqlite_persistence": {
+    "description": "Instrucciones para persistir datos en SQLite local del dispositivo",
+    "tables": [
+      {
+        "name": "sucursal",
+        "source_endpoint": "/api/bootstrap/sucursal/:id",
+        "fields": "id, codigo, nombre, rut, direccion, telefono, email, timezone, esta_activa, configuracion",
+        "sql": "INSERT OR REPLACE INTO sucursal (id, codigo, nombre, rut, direccion, telefono, email, timezone, esta_activa, configuracion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+      },
+      {
+        "name": "dispositivo",
+        "source_endpoint": "/api/bootstrap/dispositivo",
+        "fields": "id, sucursal_id, codigo, nombre, tipo, dispositivo_info, esta_activo, ultima_sincronizacion, version_app",
+        "sql": "INSERT OR REPLACE INTO dispositivo (id, sucursal_id, codigo, nombre, tipo, dispositivo_info, esta_activo, ultima_sincronizacion, version_app) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+      },
+      {
+        "name": "meta_local",
+        "source_endpoint": "/api/bootstrap/meta",
+        "fields": "key, value",
+        "sql": "INSERT OR REPLACE INTO meta_local (key, value) VALUES ('bootstrap_version', ?), ('catalog_version', ?), ('last_sync', ?)"
+      }
+    ]
+  },
+  "test_results": {
+    "unit_tests": {
+      "total": 30,
+      "passed": 30,
+      "failed": 0,
+      "suites": [
+        "bootstrap.service.spec.ts - 15 tests",
+        "bootstrap.controller.spec.ts - 15 tests"
+      ]
+    },
+    "coverage": {
+      "controllers": "100%",
+      "services": "100%",
+      "repositories": "Mocked (E2E tests pendientes)"
+    }
+  }
+}
