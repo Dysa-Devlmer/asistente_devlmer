@@ -19,6 +19,17 @@ export enum ErrorCode {
   // 404 - Not Found
   RESOURCE_NOT_FOUND = 'RESOURCE_NOT_FOUND',
   SUCURSAL_NOT_FOUND = 'SUCURSAL_NOT_FOUND',
+  EMPLEADO_NOT_FOUND = 'EMPLEADO_NOT_FOUND',
+  SESION_CAJA_NOT_FOUND = 'SESION_CAJA_NOT_FOUND',
+  MOVIMIENTO_CAJA_NOT_FOUND = 'MOVIMIENTO_CAJA_NOT_FOUND',
+
+  // 409 - Conflict (Caja business rules)
+  CAJA_ALREADY_OPEN = 'CAJA_ALREADY_OPEN',
+  CAJA_NOT_OPEN = 'CAJA_NOT_OPEN',
+  CAJA_ALREADY_CLOSED = 'CAJA_ALREADY_CLOSED',
+
+  // 403 - Forbidden
+  INSUFFICIENT_PERMISSIONS = 'INSUFFICIENT_PERMISSIONS',
 
   // 429 - Too Many Requests
   RATE_LIMIT_EXCEEDED = 'RATE_LIMIT_EXCEEDED',
@@ -243,6 +254,99 @@ export class DatabaseUnavailableError extends TypedError {
       ErrorCode.DATABASE_UNAVAILABLE,
       503,
       metadata,
+      true
+    );
+  }
+}
+
+/**
+ * Errores 404 - Not Found (Caja)
+ */
+export class EmpleadoNotFoundError extends TypedError {
+  constructor(empleadoId: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Empleado con ID ${empleadoId} no encontrado`,
+      ErrorCode.EMPLEADO_NOT_FOUND,
+      404,
+      { ...metadata, empleadoId },
+      true
+    );
+  }
+}
+
+export class SesionCajaNotFoundError extends TypedError {
+  constructor(sesionId: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Sesión de caja con ID ${sesionId} no encontrada`,
+      ErrorCode.SESION_CAJA_NOT_FOUND,
+      404,
+      { ...metadata, sesionId },
+      true
+    );
+  }
+}
+
+export class MovimientoCajaNotFoundError extends TypedError {
+  constructor(movimientoId: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Movimiento de caja con ID ${movimientoId} no encontrado`,
+      ErrorCode.MOVIMIENTO_CAJA_NOT_FOUND,
+      404,
+      { ...metadata, movimientoId },
+      true
+    );
+  }
+}
+
+/**
+ * Errores 409 - Conflict (Reglas de negocio de Caja)
+ */
+export class CajaAlreadyOpenError extends TypedError {
+  constructor(sucursalId: string, sesionActivaId: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Ya existe una caja abierta en la sucursal ${sucursalId}. Cierre la sesión ${sesionActivaId} antes de abrir una nueva.`,
+      ErrorCode.CAJA_ALREADY_OPEN,
+      409,
+      { ...metadata, sucursalId, sesionActivaId },
+      true
+    );
+  }
+}
+
+export class CajaNotOpenError extends TypedError {
+  constructor(sucursalId: string, metadata: ErrorMetadata = {}) {
+    super(
+      `No hay una caja abierta en la sucursal ${sucursalId}. Debe abrir la caja primero.`,
+      ErrorCode.CAJA_NOT_OPEN,
+      409,
+      { ...metadata, sucursalId },
+      true
+    );
+  }
+}
+
+export class CajaAlreadyClosedError extends TypedError {
+  constructor(sesionId: string, metadata: ErrorMetadata = {}) {
+    super(
+      `La sesión de caja ${sesionId} ya está cerrada. No se puede modificar una caja cerrada (inmutabilidad).`,
+      ErrorCode.CAJA_ALREADY_CLOSED,
+      409,
+      { ...metadata, sesionId },
+      true
+    );
+  }
+}
+
+/**
+ * Errores 403 - Forbidden
+ */
+export class InsufficientPermissionsError extends TypedError {
+  constructor(requiredPermission: string, metadata: ErrorMetadata = {}) {
+    super(
+      `Permisos insuficientes. Se requiere el permiso: ${requiredPermission}`,
+      ErrorCode.INSUFFICIENT_PERMISSIONS,
+      403,
+      { ...metadata, requiredPermission },
       true
     );
   }
