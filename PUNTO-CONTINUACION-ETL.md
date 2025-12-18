@@ -1,25 +1,25 @@
 # 🔄 PUNTO DE CONTINUACIÓN - ETL MIGRATION
 
 **Fecha Pausa:** 2025-12-18
-**Hora:** 02:15 UTC
-**Estado:** ⏸️ Sesión detenida tras rerun controlado (3.2) — NO se ejecutó 3.3 porque orders<8000.
+**Hora:** 02:26 UTC
+**Estado:** ⏸️ Sesión detenida tras fix de fechas y rerun 3.2 — 3.3 no ejecutada (orders=7,998 < 8,000; faltan 32 órdenes por ventana de shifts).
 
 ---
 
-## Última acción (18/12 02:06 UTC)
-- Re-ejecutada **PHASE 3.2 – Orders** con warmup y mesa placeholder `Num_Mesa='00'`.
-- Placeholder mesa creado/asegurado: `legacy_table_number='00'`, `tableNumber='MESA_SISTEMA'`, room existente (id más bajo). **ID creado:** 62.
+## Última acción (18/12 02:24 UTC)
+- Fix en `parseMySQLDate`: ahora soporta Buffer|string|Date|null, trim, rechaza `0000-00-00` y registra warning; evita error `dateStr.startsWith`.
+- Re-ejecutada **PHASE 3.2 – Orders** (warmup + mesa placeholder `Num_Mesa='00'` id=62 ya existente).
 - Lectura legacy: 8,030 órdenes cerradas (12 meses).
-- Resultado del migrator: Migrated 609 / Skipped 7,421 / Errors 0 / Orphans 0 (skips incluyen ya migrados + 54 con fecha inválida).
-- Conteos Postgres (pos_db, PGDATA `runtime/data/postgres`, puerto 5432):
-  - Orders: antes 7,418 → después 7,976
-  - Order Items: 0 → 0 (3.3 no ejecutada)
-  - Cash Register Shifts: 84
-  - Products: 819; Tables: 62 (incluye placeholder)
-- Stop condition aplicada: orders=7,976 (<8,000) ⇒ **3.3 no se corrió**.
+- Resultado migrator: Migrated 51 / Skipped 7,979 / Errors 0 / Orphans 0 (skips mayormente por idempotencia).
+- Conteos Postgres (PGDATA `runtime/data/postgres`, puerto 5432):
+  - Orders: antes 7,976 → después 7,998 (faltan 32 para 8,030)
+  - Order Items: 0 (3.3 NO ejecutada)
+  - Cash Register Shifts: 84; Products: 819; Tables: 62 (incl. placeholder 00)
+- Stop condition aplicada: orders=7,998 (<8,000) ⇒ **3.3 no se corrió**.
 
-### Motivo de faltantes (≈54 órdenes)
-- Warn logs muestran `dateStr.startsWith is not a function` (fecha/hora como Buffer) en `parseMySQLDate`; esos registros se skippean (transform devuelve null). No hay orphans por FK en esta corrida.
+### Motivo de faltantes (32 órdenes)
+- IDs faltantes (sample): 5099, 5430, 5960, 5973, 6088, 7000, 7333, 7406, 7642, 7644, 7645, 7646, 7780, 8646, 10155, 10633, 10634, 10635, 12694, 12696, 13978, 14435, 14807, 14810, 14854, 15002, 15009, 15012, 15854, 17678, 17741, 17742.
+- Todas tienen `fecha_venta` en Buffer convertibles (parse ok) pero caen fuera de la ventana de shifts (6 meses, apcajas); no existe shiftId → el transform retorna null. No hay orphans loggeados por FK, solo skips idempotentes.
 
 ---
 
@@ -38,16 +38,16 @@
 - Fase 1: ✅ completa (rooms, categories, price_tiers, payment_methods, cash_registers, employees, customers, kitchen_stations).
 - Fase 2: ✅ completa (products 819, product_prices 738, tables 62 con placeholder 00).
 - Fase 3.1: ✅ shifts (84) con placeholder employee.
-- Fase 3.2: ✅ re-ejecutada; **orders=7,976** (54 con fecha inválida siguen fuera).
+- Fase 3.2: ✅ re-ejecutada; **orders=7,998** (faltan 32 por ausencia de shift en ventana 6m).
 - Fase 3.3: ⏸️ NO ejecutada hoy (stop por orders<8,000); order_items=0.
 - Fase 3.4+ y validadores: ⏸️ sin tocar.
 
 ---
 
 ## Próximo paso controlado
-1) Resolver 54 órdenes con fecha Buffer (ajustar parseMySQLDate o manejo de Buffer en 3.2) y re-ejecutar solo Phase 3.2.
-2) Verificar conteo orders > 8,000. Si no se supera, detener y reportar razones top.
-3) Solo con orders>8,000: ejecutar Phase 3.3 (order_items) y reportar migrados/skipped/orphans (top 20) + conteos finales.
+1) Decidir cómo cubrir las 32 órdenes fuera de ventana de shifts (6m). Opciones: ampliar ventana de shifts a 12m o definir shift placeholder por id_caja para órdenes >6m.
+2) Re-ejecutar solo Phase 3.2 tras la decisión; confirmar orders >= 8,000 o detener con lista de faltantes.
+3) Solo con orders >= 8,000: ejecutar Phase 3.3 (order_items) y reportar migrados/skipped/orphans (top 20) + conteos finales.
 4) Mantener PGDATA `runtime/data/postgres`, puerto 5432. No tocar Prisma ni avanzar a 3.4.
 
 ---
@@ -68,6 +68,6 @@
 
 ## Resumen rápido para reanudar
 - DB objetivo: PostgreSQL portable `runtime/data/postgres` puerto 5432.
-- Datos actuales: orders 7,976; order_items 0; products 819; shifts 84; tables 62 (incl. placeholder 00 id=62).
-- Pendiente: fijar parse de fecha Buffer en orders, re-ejecutar 3.2, luego 3.3 si orders>8k.
+- Datos actuales: orders 7,998; order_items 0; products 819; shifts 84; tables 62 (incl. placeholder 00 id=62).
+- Pendiente: decisión sobre órdenes sin shift (>6m) para llegar a 8k+, re-ejecutar 3.2 y luego 3.3.
 - No ejecutar 3.4+ hasta nueva autorización.

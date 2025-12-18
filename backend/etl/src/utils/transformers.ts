@@ -11,6 +11,7 @@ import {
   PAYMENT_METHOD_CODES,
   DEFAULTS,
 } from '../config/constants';
+import logger from './logger';
 
 /**
  * Generate code from name (slug-like)
@@ -164,15 +165,26 @@ export function requiresReference(name: string | null): boolean {
 
 /**
  * Parse MySQL datetime to JS Date
- * Handles "0000-00-00 00:00:00" invalid dates
+ * Supports Buffer | string | Date | null and handles "0000-00-00" sentinels.
  */
-export function parseMySQLDate(dateStr: string | null): Date | null {
-  if (!dateStr || dateStr.startsWith('0000-00-00')) {
+export function parseMySQLDate(value: string | Buffer | Date | null): Date | null {
+  if (value === null || value === undefined) {
     return null;
   }
 
-  const date = new Date(dateStr);
+  if (value instanceof Date) {
+    return isNaN(value.getTime()) ? null : value;
+  }
+
+  const raw = Buffer.isBuffer(value) ? value.toString('utf8').trim() : String(value).trim();
+  if (!raw || raw.startsWith('0000-00-00')) {
+    logger.warn(`parseMySQLDate: invalid/empty date "${raw}"`);
+    return null;
+  }
+
+  const date = new Date(raw);
   if (isNaN(date.getTime())) {
+    logger.warn(`parseMySQLDate: failed to parse date "${raw}"`);
     return null;
   }
 
