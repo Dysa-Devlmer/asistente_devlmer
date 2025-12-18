@@ -1,38 +1,26 @@
 # Repository Guidelines
 
-## Project Structure & Modules
-- Root: JARVIS core scripts (`jarvis-complete.js`, `start-protected.js`) and AI subsystems in `core/` (autonomous-agent, neural-memory, web-intelligence, voice, security, etc.).
-- POS backend: TypeScript Express + Prisma in `backend/src`; DB schema in `backend/prisma`; tests in `backend/tests`; env templates in `backend/.env.example`.
-- Panel web: `web-interface/backend` (Express + Socket.io) and `web-interface/frontend` (React/Vite). Entry helpers in `web-interface/start-protected-panel.js`.
-- Infra/assets: Docker (`docker-compose.yml`, `Dockerfile.backend`), k8s (`k8s/`), Terraform (`terraform/`), docs in `docs/`, artifacts/archives/logs live outside source.
+## Project Structure & Module Organization
+- Core POS backend in `backend/` (Express + Prisma); ETL pipeline under `backend/etl` migrates MySQL `sysmehotel` (read-only 127.0.0.1:4306) into portable PostgreSQL at `runtime/data/postgres` (scripts control `start-db.bat`/`stop-db.bat`).
+- Prisma schema resides in `backend/prisma`; application code in `backend/src`; tests in `backend/tests`; ETL source lives in `backend/etl/src/migrators` grouped by phases; ETL logs in `backend/etl/logs`.
+- Scripts/infra helpers sit in `scripts/`; docs and checkpoints in root (`PUNTO-CONTINUACION-ETL.md`, `PASO-4.3-REPORTE-FINAL.md`, `docs/`); session context/memory in `memory/`.
 
-## Build, Test, Run
-- Install: `npm install` (root), `cd backend && npm install`.
-- Run JARVIS protected: `npm run protected`; panel web: `npm run panel`.
-- POS backend dev: `cd backend && npm run dev`; build: `npm run build`; start compiled: `npm start`.
-- Tests: root (Jest) `npm test`; backend (Vitest) `cd backend && npm test`.
-- Lint/format: root `npm run lint`; backend `npm run lint` and `npm run format`.
+## Build, Test, and Development Commands
+- Bootstrap: `cd backend && npm install` (and `cd backend/etl && npm install` for ETL).
+- DB lifecycle: `scripts/start-db.bat` and `scripts/stop-db.bat` (PGDATA `runtime/data/postgres`, port 5432); backups land in `runtime/data/backups/`.
+- Backend: `npm run dev` for hot reload, `npm run build` then `npm start` for compiled server; lint/format with `npm run lint` / `npm run format`.
+- ETL: `cd backend/etl && npm run build`; run a phase with `npm run migrate` (targets configured phases) or direct `node dist/index.js`; validations via `npm run validate`.
 
-## Coding Style & Naming
-- JS/TS with 2-space indent. Prefer TypeScript in backend; CommonJS predominates in JARVIS core.
-- File naming: kebab-case for scripts, PascalCase for React components, `.spec.ts`/`.test.js` for tests.
-- Use ESLint/Prettier where configured; keep ASCII; preserve structured logging (e.g., `request_id`).
+## Coding Style & Naming Conventions
+- TypeScript/JavaScript with 2-space indent; keep ASCII; prefer explicit types and early null guards.
+- Preserve idempotency: always key by `legacyId`/traceability fields; do not alter Prisma schema without explicit approval.
+- Legacy-mapping rules: respect zero-padded codes (`id_complementog` length 5), avoid casting to numbers, and trim+`padStart` when matching against product maps.
 
 ## Testing Guidelines
-- Frameworks: Jest (root), Vitest + Supertest in `backend/`.
-- Add unit/integration tests near code (`tests/unit`, `tests/integration`, `backend/tests`).
-- Cover health checks, DB connectivity, and new routes/services; run suites before PRs.
+- Backend uses Vitest; add `.spec.ts` near code and run `npm test` before pushes.
+- ETL: compile with `npm run build`; for changes run the targeted phase and inspect logs (`backend/etl/logs/*`). Validate FK/totals via `npm run validate` when relevant.
 
-## Memory & Continuity (Agents)
-- Siempre cargar contexto antes de actuar: leer `memory/CONTEXT-FOR-CLAUDE.md`; si se necesita detalle, revisar `memory/context/CURRENT-STATE.json` y últimos JSON en `memory/sessions/`.
-- Registrar acciones importantes con el logger (`core/auto-memory-logger.cjs`): `logCommand`, `logFileModified`, `logDecision` para comandos, archivos y decisiones clave.
-- Mantener coherencia diaria: resúmenes en `memory/daily/YYYY-MM-DD.md` y snapshots en `memory/state-snapshots/` ayudan a reconstruir sesiones.
-- Al abrir nueva sesión, mencionar última sesión, pendientes y siguiente paso sugerido; al cerrar, actualizar estado y pendientes.
-
-## Commit & PR Guidelines
-- Commits: imperative, concise (e.g., "Fix bootstrap pagination", "Add caja delta validation").
-- PRs: include summary, modules touched (`backend/`, `core/`, `web-interface/`), tests run, and env/DB changes. Add screenshots for UI tweaks and note Prisma migration steps.
-
-## Security & Configuration
-- Keep secrets out of VCS; copy `.env.example` to `.env` locally. Backend uses `DATABASE_URL`; align driver choice (MySQL/PostgreSQL) with code and docs.
-- Do not commit `node_modules`, build outputs (`backend/dist`), large zips (`postgresql-portable.zip`), or logs.
+## Commit & Pull Request Guidelines
+- Commit messages in imperative, concise form (e.g., "Add shift placeholder mapping"); group work by phase/module.
+- PRs/handovers should list affected areas (`backend/etl`, `backend/src`, `scripts`), commands run, DB touch-points (scripts/ports/PGDATA), and attach top orphans/warnings when ETL changes.
+- Update checkpoints (`PUNTO-CONTINUACION-ETL.md`) and mention placeholder employee usage when shift logic changes; avoid committing secrets, `node_modules`, or runtime artifacts.

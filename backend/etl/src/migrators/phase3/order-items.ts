@@ -61,7 +61,7 @@ export async function migrateOrderItems(): Promise<void> {
       id_complementog,
       cantidad,
       precio,
-      subtotal
+      total
     FROM ventadir_comg
     WHERE id_venta IN (${migratedOrderIds.join(',')})
     ORDER BY id_linea
@@ -102,7 +102,7 @@ export async function migrateOrderItems(): Promise<void> {
 
       const quantity = roundQuantity(legacy.cantidad);
       const unitPrice = legacy.precio !== null ? Math.round(legacy.precio * 100) / 100 : 0;
-      const subtotal = legacy.subtotal !== null ? Math.round(legacy.subtotal * 100) / 100 : quantity * unitPrice;
+      const subtotal = legacy.total !== null ? Math.round(legacy.total * 100) / 100 : quantity * unitPrice;
       const totalAmount = subtotal; // No discounts in legacy data
 
       const item = await prisma.orderItem.create({

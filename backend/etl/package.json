@@ -1,0 +1,27 @@
+{
+  "name": "pos-etl-migration",
+  "version": "1.0.0",
+  "description": "ETL Migration from Legacy MySQL to New PostgreSQL POS System",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx src/index.ts",
+    "dev": "tsx watch src/index.ts",
+    "migrate": "tsx src/index.ts",
+    "validate": "tsx src/validate.ts"
+  },
+  "keywords": ["etl", "migration", "pos", "mysql", "postgresql"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "mysql2": "^3.11.5",
+    "winston": "^3.17.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "typescript": "^5.7.3",
+    "tsx": "^4.19.2"
+  }
+}

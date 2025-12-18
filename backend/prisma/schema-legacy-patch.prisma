@@ -1,0 +1,162 @@
+// PATCH: Campos de Trazabilidad Legacy
+// Este archivo documenta los cambios necesarios al schema.prisma
+// para agregar campos legacy_id y similares
+
+// INSTRUCCIONES:
+// Agregar estos campos a cada modelo en la posición indicada
+
+// ============================================================
+// 1. Order - Ya tiene legacyId (línea 91)
+// ============================================================
+// VERIFICAR que tiene:
+//   legacyId             BigInt?      @map("legacy_id")
+// VERIFICAR que tiene índice:
+//   @@index([legacyId])
+
+
+// ============================================================
+// 2. OrderItem
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyId             BigInt?      @map("legacy_id")
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyId])
+
+
+// ============================================================
+// 3. Product
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyId             BigInt?      @map("legacy_id")
+//   legacySku            String?      @map("legacy_sku") @db.VarChar(50)
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyId])
+//   @@index([legacySku])
+
+
+// ============================================================
+// 4. Category
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyCode           String?      @map("legacy_code") @db.VarChar(20)
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyCode])
+
+
+// ============================================================
+// 5. PriceTier
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyCode           String?      @map("legacy_code") @db.VarChar(20)
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyCode])
+
+
+// ============================================================
+// 6. Table
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyTableNumber    String?      @map("legacy_table_number") @db.VarChar(20)
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyTableNumber])
+
+
+// ============================================================
+// 7. Room
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyCode           String?      @map("legacy_code") @db.VarChar(20)
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyCode])
+
+
+// ============================================================
+// 8. CashRegister
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyId             BigInt?      @map("legacy_id")
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyId])
+
+
+// ============================================================
+// 9. CashRegisterShift
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyId             BigInt?      @map("legacy_id")
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyId])
+
+
+// ============================================================
+// 10. Payment
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyId             BigInt?      @map("legacy_id")
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyId])
+
+
+// ============================================================
+// 11. PaymentMethod
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyCode           String?      @map("legacy_code") @db.VarChar(20)
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyCode])
+
+
+// ============================================================
+// 12. Invoice
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyId             BigInt?      @map("legacy_id")
+//   legacySeries         String?      @map("legacy_series") @db.VarChar(10)
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyId])
+//   @@index([legacySeries])
+
+
+// ============================================================
+// 13. Employee
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyId             BigInt?      @map("legacy_id")
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyId])
+
+
+// ============================================================
+// 14. Customer
+// ============================================================
+// AGREGAR después de la línea "id BigInt @id...":
+//   legacyId             BigInt?      @map("legacy_id")
+//
+// AGREGAR en sección @@index:
+//   @@index([legacyId])
+
+
+// ============================================================
+// RESUMEN
+// ============================================================
+// Total modelos modificados: 14
+// Total campos agregados: 17
+// Total índices agregados: 17
+//
+// DESPUÉS DE APLICAR:
+// npx prisma format
+// npx prisma validate
+// npx prisma migrate dev --name add_legacy_traceability
+// npx prisma generate

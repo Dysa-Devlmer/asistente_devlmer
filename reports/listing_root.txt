@@ -1,0 +1,12 @@
+﻿
+
+    Directorio: E:\POS SYSME\Sysme_Principal\SYSME
+
+
+Mode                 LastWriteTime         Length Name                                                                                                                                                                                                                                                                                                                                                          
+----                 -------------         ------ ----                                                                                                                                                                                                                                                                                                                                                          
+d-----        07-09-2025      1:02                SGC                                                                                                                                                                                                                                                                                                                                                           
+d-----        07-09-2025      1:03                sysmeserver                                                                                                                                                                                                                                                                                                                                                   
+
+
+

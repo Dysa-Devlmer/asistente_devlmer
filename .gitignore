@@ -21,6 +21,13 @@ coverage/
 data/memory-db.json
 data/tasks.json
 
+# PostgreSQL Embebido (NUNCA versionar)
+runtime/postgres/
+runtime/data/
+runtime/postgres_temp/
+postgresql-portable.zip
+runtime/.pgpass_temp
+
 # AI Runtime Data (generado por sistemas de IA)
 memory/ai-master-state.json
 memory/experience-buffer.json

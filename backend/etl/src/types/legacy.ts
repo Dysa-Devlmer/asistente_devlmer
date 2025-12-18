@@ -106,7 +106,7 @@ export interface LegacyVentadirecta {
   num_mesa: string | null; // Mapped from 'Num_Mesa' (char(3)) FK to mesa
   id_camarero: number | null; // FK to camareros (int(4))
   id_caja: number | null; // FK to cajas (int(2)) - usado en lugar de id_apcajas
-  fecha_venta: string | null; // datetime (CONCAT de date + time)
+  fecha_venta: string | Buffer | null; // datetime (CONCAT de date + time) puede venir como Buffer
   total: number | null; // Mapped from 'tv' (float) - Total Venta
   estado: string | null; // Mapped from 'cerrada' (char S/N)
   observaciones: string | null; // varchar(249)
@@ -121,7 +121,7 @@ export interface LegacyVentadirComg {
   id_complementog: string | null; // FK to complementog (varchar(5) zero-padded)
   cantidad: number | null; // decimal(10,3)
   precio: number | null; // decimal(10,2)
-  subtotal: number | null; // decimal(10,2)
+  total: number | null; // decimal(10,2)
 }
 
 // Legacy: pagoscobros table (payments)
