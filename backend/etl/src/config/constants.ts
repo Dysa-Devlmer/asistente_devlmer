@@ -83,7 +83,7 @@ export const PAYMENT_METHOD_CODES: Record<string, string> = {
 // Migration time windows (months)
 export const MIGRATION_WINDOWS = {
   transactions: 12, // 12 months of transactions
-  cash_shifts: 6,   // 6 months of cash register shifts
+  cash_shifts: 12,  // 12 months of cash register shifts
   all_masters: true, // All master data
 };
 

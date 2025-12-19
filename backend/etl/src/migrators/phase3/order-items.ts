@@ -33,18 +33,18 @@ export async function migrateOrderItems(): Promise<void> {
     logger.info(`ℹ️  Product map loaded: ${productIdMap.size()} entries`);
   }
 
-  if (orderIdMap.size() === 0) {
-    logger.info('ℹ️  Loading order map from PostgreSQL (legacy_id → id)');
-    const orders = await prisma.order.findMany({
-      select: { id: true, legacyId: true },
-    });
-    orders.forEach((o) => {
-      if (o.legacyId !== null && o.legacyId !== undefined) {
-        orderIdMap.set(o.legacyId, o.id);
-      }
-    });
-    logger.info(`ℹ️  Order map loaded: ${orderIdMap.size()} entries`);
-  }
+  logger.info('ℹ️  Loading order map from PostgreSQL (legacy_id → id)');
+  orderIdMap.clear();
+  const orders = await prisma.order.findMany({
+    select: { id: true, legacyId: true },
+  });
+  orders.forEach((o) => {
+    if (o.legacyId !== null && o.legacyId !== undefined) {
+      const legacyKey = Number(o.legacyId);
+      orderIdMap.set(legacyKey, o.id);
+    }
+  });
+  logger.info(`ℹ️  Order map loaded: ${orderIdMap.size()} entries`);
 
   // Fetch legacy data (only items from migrated orders)
   const migratedOrderIds = Array.from(orderIdMap['map'].keys());
@@ -74,7 +74,7 @@ export async function migrateOrderItems(): Promise<void> {
     tableName: 'order_items',
     batchSize: BATCH_SIZES.order_items,
     data: legacyItems,
-    getLegacyId: (item) => item.id_linea,
+    getLegacyId: (item) => BigInt(item.id_venta) * 1000n + BigInt(item.id_linea),
     checkExisting: async (tx, legacyId) => {
       const existing = await tx.orderItem.findFirst({
         where: { legacyId: BigInt(legacyId) },
@@ -82,6 +82,8 @@ export async function migrateOrderItems(): Promise<void> {
       return !!existing;
     },
     transform: async (legacy, index) => {
+      const legacyItemId = BigInt(legacy.id_venta) * 1000n + BigInt(legacy.id_linea);
+
       // Resolve FKs
       const orderId = orderIdMap.get(legacy.id_venta);
 
@@ -91,12 +93,12 @@ export async function migrateOrderItems(): Promise<void> {
       const productId = safeKey ? productIdMap.get(safeKey) : undefined;
 
       if (!orderId) {
-        logOrphan('order_items', legacy.id_linea, `Order not found: ${legacy.id_venta}`);
+        logOrphan('order_items', legacyItemId.toString(), `Order not found: ${legacy.id_venta}`);
         return null;
       }
 
       if (!productId) {
-        logOrphan('order_items', legacy.id_linea, `Product not found: ${legacy.id_complementog}`);
+        logOrphan('order_items', legacyItemId.toString(), `Product not found: ${legacy.id_complementog}`);
         return null;
       }
 
@@ -115,7 +117,7 @@ export async function migrateOrderItems(): Promise<void> {
           totalAmount,
           notes: null,
           status: 'delivered', // Historical orders are all delivered
-          legacyId: BigInt(legacy.id_linea),
+          legacyId: legacyItemId,
         },
       });
 

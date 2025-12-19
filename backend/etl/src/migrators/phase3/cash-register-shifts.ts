@@ -1,7 +1,7 @@
 /**
  * FASE 3.1 - Cash Register Shifts Migration
  * Migrates: apcajas → cash_register_shifts
- * Historical window: 6 months
+ * Historical window: 12 months
  */
 
 import { queryLegacy } from '../../config/legacy-db';
@@ -104,7 +104,7 @@ export async function migrateCashRegisterShifts(): Promise<void> {
   const placeholderEmployeeId = await ensurePlaceholderEmployee(prisma);
   logger.info(`ℹ️  Placeholder employee ready: code=${PLACEHOLDER_EMPLOYEE_CODE}, id=${placeholderEmployeeId.toString()}`);
 
-  // Fetch legacy data (6 months)
+  // Fetch legacy data (12 months)
   // NOTE: Schema real usa PK compuesto (id_caja, id_camarero, fecha_apertura, hora_apertura)
   // Campos reales: cambio_inicial (no monto_apertura), cambio_final (no monto_cierre)
   // Campo estado: 'abierta' (char 'S'/'N'), id_apcajas NO es PK (nullable)

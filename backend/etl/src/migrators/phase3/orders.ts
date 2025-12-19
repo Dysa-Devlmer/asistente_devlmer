@@ -12,6 +12,7 @@ import { parseMySQLDate, generateOrderNumber, convertToUtf8 } from '../../utils/
 import { processBatch, IdMap } from '../../utils/batch-processor';
 import { tableNumberMap } from '../phase2/tables';
 import { employeeIdMap } from '../phase1/employees';
+import { cashRegisterIdMap } from '../phase1/cash-registers';
 import { shiftIdMap } from './cash-register-shifts';
 import { logOrphan, logWarning } from '../../utils/logger';
 import logger from '../../utils/logger';
@@ -19,6 +20,10 @@ import logger from '../../utils/logger';
 export const orderIdMap = new IdMap();
 const PLACEHOLDER_TABLE_NUMBER = '00';
 const PLACEHOLDER_TABLE_NAME = 'MESA_SISTEMA';
+type ShiftSlot = { id: bigint; openedAt: Date; closedAt: Date | null };
+const shiftTimelineByCash = new Map<number, ShiftSlot[]>();
+const legacyCashToId = new Map<number, bigint>();
+let placeholderEmployeeId: bigint | null = null;
 
 async function ensurePlaceholderTable(prisma: ReturnType<typeof getPrismaClient>): Promise<bigint> {
   const existing = await prisma.table.findFirst({
@@ -68,6 +73,8 @@ async function warmupMaps(prisma: ReturnType<typeof getPrismaClient>): Promise<v
   registers.forEach((r) => {
     if (r.legacyId !== null && r.legacyId !== undefined) {
       cashRegisterIdToLegacy.set(r.id, Number(r.legacyId));
+      legacyCashToId.set(Number(r.legacyId), r.id);
+      cashRegisterIdMap.set(Number(r.legacyId), r.id);
     }
   });
 
@@ -94,10 +101,16 @@ async function warmupMaps(prisma: ReturnType<typeof getPrismaClient>): Promise<v
       employeeIdMap.set(Number(e.legacyId), e.id);
     }
   });
+  // Placeholder employee (ya creado en 3.1)
+  const placeholder = await prisma.employee.findFirst({
+    where: { employeeCode: 'SYSTEM_CASHIER' },
+    select: { id: true },
+  });
+  placeholderEmployeeId = placeholder ? placeholder.id : null;
 
   // Shifts
   const shifts = await prisma.cashRegisterShift.findMany({
-    select: { id: true, legacyId: true, cashRegisterId: true },
+    select: { id: true, legacyId: true, cashRegisterId: true, openedAt: true, closedAt: true },
   });
   shifts.forEach((s) => {
     if (s.legacyId !== null && s.legacyId !== undefined) {
@@ -106,8 +119,55 @@ async function warmupMaps(prisma: ReturnType<typeof getPrismaClient>): Promise<v
     const legacyCashId = cashRegisterIdToLegacy.get(s.cashRegisterId);
     if (legacyCashId !== undefined) {
       shiftIdMap.set(legacyCashId, s.id);
+      const slot: ShiftSlot = { id: s.id, openedAt: s.openedAt, closedAt: s.closedAt };
+      const existing = shiftTimelineByCash.get(legacyCashId) ?? [];
+      existing.push(slot);
+      shiftTimelineByCash.set(legacyCashId, existing);
     }
   });
+
+  // ordenar por apertura ascendente para busqueda por rango
+  shiftTimelineByCash.forEach((arr, key) => {
+    arr.sort((a, b) => a.openedAt.getTime() - b.openedAt.getTime());
+    shiftTimelineByCash.set(key, arr);
+  });
+}
+
+async function findShiftId(
+  prisma: ReturnType<typeof getPrismaClient>,
+  cashRegisterLegacyId: number | undefined,
+  orderAt: Date
+): Promise<bigint | undefined> {
+  if (cashRegisterLegacyId === undefined || cashRegisterLegacyId === null) return undefined;
+  const slots = shiftTimelineByCash.get(cashRegisterLegacyId);
+  if (slots && slots.length > 0) {
+    let candidate: ShiftSlot | undefined;
+    for (const slot of slots) {
+      const closesAfter = slot.closedAt ? orderAt.getTime() <= slot.closedAt.getTime() : true;
+      if (slot.openedAt.getTime() <= orderAt.getTime() && closesAfter) {
+        if (!candidate || slot.openedAt.getTime() > candidate.openedAt.getTime()) {
+          candidate = slot;
+        }
+      }
+    }
+    if (candidate) return candidate.id;
+  }
+
+  // Fallback: consulta directa por rango si no hubo match en memoria
+  const cashRegisterId = cashRegisterLegacyId !== undefined ? legacyCashToId.get(cashRegisterLegacyId) : undefined;
+  if (!cashRegisterId) return undefined;
+
+  const shift = await prisma.cashRegisterShift.findFirst({
+    where: {
+      cashRegisterId,
+      openedAt: { lte: orderAt },
+      OR: [{ closedAt: null }, { closedAt: { gte: orderAt } }],
+    },
+    orderBy: { openedAt: 'desc' },
+    select: { id: true },
+  });
+
+  return shift?.id;
 }
 
 // Track sequence numbers per date
@@ -205,11 +265,14 @@ export async function migrateOrders(): Promise<void> {
             ? tableNumberMap.get(mesaKey)
             : undefined;
       const employeeId = legacy.id_camarero ? employeeIdMap.get(legacy.id_camarero) : undefined;
+      const resolvedEmployeeId = employeeId ?? placeholderEmployeeId;
 
-      // NOTE: id_apcajas NO existe en ventadirecta, intentar derivar de id_caja
-      // Buscar shift que coincida con caja en el mapa de shifts
+      // NOTE: id_apcajas NO existe en ventadirecta. Resolver shift por caja y rango de tiempo.
       const shiftKey = legacy.id_caja !== null && legacy.id_caja !== undefined ? Number(legacy.id_caja) : undefined;
-      const shiftId = shiftKey !== undefined ? shiftIdMap.get(shiftKey) : undefined;
+      const shiftId =
+        createdAt && shiftKey !== undefined
+          ? (await findShiftId(prisma, shiftKey, createdAt)) ?? shiftIdMap.get(shiftKey)
+          : undefined;
 
       // Validate required FKs (table, employee y shift son TODOS obligatorios por schema)
       if (!tableId) {
@@ -217,7 +280,7 @@ export async function migrateOrders(): Promise<void> {
         return null;
       }
 
-      if (!employeeId) {
+      if (!resolvedEmployeeId) {
         logOrphan('orders', legacy.id_venta, `Employee not found: ${legacy.id_camarero}`);
         return null;
       }
@@ -230,9 +293,36 @@ export async function migrateOrders(): Promise<void> {
 
       // Generate order number
       const dateKey = createdAt.toISOString().split('T')[0];
-      const sequence = (orderSequences.get(dateKey) || 0) + 1;
+      let sequence = (orderSequences.get(dateKey) || 0) + 1;
+      let orderNumber = generateOrderNumber(createdAt, sequence);
+
+      // Garantizar unicidad por fecha: si el número ya existe para otro legacyId, avanzar la secuencia
+      // (evita colisiones cuando fechas/hora se ajustan por zona horaria o reintentos previos)
+      while (true) {
+        const existingByNumber = await prisma.order.findFirst({
+          where: { orderNumber },
+          select: { id: true, legacyId: true },
+        });
+
+        if (!existingByNumber) {
+          break;
+        }
+
+        if (existingByNumber.legacyId !== null && existingByNumber.legacyId === BigInt(legacy.id_venta)) {
+          orderIdMap.set(legacy.id_venta, existingByNumber.id);
+          return existingByNumber;
+        }
+
+        logger.warn(
+          `Order number collision on ${dateKey}: ${orderNumber} already used by legacy ${existingByNumber.legacyId?.toString()}. Advancing sequence.`
+        );
+
+        sequence += 1;
+        orderNumber = generateOrderNumber(createdAt, sequence);
+      }
+
+      // Persistimos la última secuencia usada para la fecha
       orderSequences.set(dateKey, sequence);
-      const orderNumber = generateOrderNumber(createdAt, sequence);
 
       // NOTE: estado mapeado desde 'cerrada' (char S/N)
       // 'S' = cerrada (closed), cualquier otro valor = open
@@ -252,7 +342,7 @@ export async function migrateOrders(): Promise<void> {
         data: {
           orderNumber,
           tableId,
-          waiterId: employeeId,
+          waiterId: resolvedEmployeeId,
           shiftId, // REQUIRED (validado arriba)
           status,
           subtotal: 0, // Will be calculated from items
