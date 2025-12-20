@@ -8,7 +8,7 @@
  * - Metadata contextual
  */
 
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 
 export enum LogLevel {
   ERROR = 'error',
@@ -116,7 +116,7 @@ export class StructuredLogger {
    * Generar request ID único
    */
   static generateRequestId(): string {
-    return uuidv4();
+    return randomUUID();
   }
 
   /**

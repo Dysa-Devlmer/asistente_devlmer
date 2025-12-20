@@ -361,5 +361,50 @@ export function createOrdersRouter(): Router {
     })
   );
 
+  router.delete(
+    '/items/:id',
+    asyncErrorHandler(async (req, res) => {
+      const orderItemId = parseBigIntField(req.params.id, 'orderItemId');
+      const cancellationReason = typeof req.body?.cancellationReason === 'string'
+        ? req.body.cancellationReason
+        : undefined;
+
+      const result = await prisma.$transaction(async (tx) => {
+        const existing = await tx.orderItem.findUnique({ where: { id: orderItemId } });
+        if (!existing || existing.deletedAt) {
+          throw new ResourceNotFoundError('order_item', String(orderItemId));
+        }
+
+        const order = await tx.order.findUnique({ where: { id: existing.orderId } });
+        if (!order || order.deletedAt) {
+          throw new ResourceNotFoundError('order', String(existing.orderId));
+        }
+        if (order.status === 'closed' || order.status === 'cancelled') {
+          throw new ValidationError('order is not open', { orderId: String(order.id) });
+        }
+
+        const deletedItem = await tx.orderItem.update({
+          where: { id: orderItemId },
+          data: {
+            status: 'cancelled',
+            cancelledAt: new Date(),
+            cancellationReason: cancellationReason ?? existing.cancellationReason,
+            deletedAt: new Date(),
+          },
+        });
+
+        const totals = await recalcOrderTotals(tx, existing.orderId);
+        await tx.order.update({
+          where: { id: existing.orderId },
+          data: totals,
+        });
+
+        return deletedItem;
+      });
+
+      res.json(toJson(result));
+    })
+  );
+
   return router;
 }
