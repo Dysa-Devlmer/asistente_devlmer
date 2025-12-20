@@ -35,6 +35,8 @@ Constraints:
   - Body: `productId`, `quantity` (optional), `unitPrice` (optional), `discountPercentage` (optional), `discountAmount` (optional), `notes` (optional)
 - `PATCH /api/orders/items/:id`
   - Body: `status` (optional), `notes` (optional), `cancellationReason` (optional)
+- `DELETE /api/orders/items/:id`
+  - Body: `cancellationReason` (optional)
 
 ### Cash flow
 - `GET /api/cash-registers`
@@ -49,9 +51,29 @@ Constraints:
 - `POST /api/shifts/:id/drawer-events`
   - Body: `userId`, `eventType`, `amount`, `reason`, `notes` (optional)
 
+### Payments (Phase 4.2)
+- `GET /api/payments`
+  - Query: `orderId` (optional), `page`, `limit`
+- `GET /api/payments/:id`
+- `GET /api/payments/order/:orderId`
+- `POST /api/payments`
+  - Body: `orderId`, `paymentMethodId`, `shiftId`, `processedByUserId`, `amount`, `referenceNumber` (optional), `notes` (optional)
+
+### Invoices (Phase 4.2)
+- `GET /api/invoices/:id`
+- `GET /api/invoices/order/:orderId`
+- `POST /api/invoices`
+  - Body: `orderId`, `documentType`, `series`, `documentNumber`, `customerId` (optional), `notes` (optional)
+
+### Validators (Phase 4.2)
+- `GET /api/validators/consistency`
+  - Query: `format` (json|md), `limit`
+
 ## Notes
 - BigInt IDs are returned as strings in JSON responses.
 - Order totals are recalculated after item changes.
+- Payments require an open shift (`shiftId` must reference a shift with status `open`).
+- Invoices are allowed only for orders in status `closed`.
 
 ## Smoke test (2025-12-20)
 
@@ -236,4 +258,115 @@ Response:
   "totalAmount": "0",
   "closedAt": "2025-12-20T03:10:04.811Z"
 }
+```
+
+## Phase 4.2 Examples (dev)
+
+Payments:
+
+1) Create payment
+```
+POST http://localhost:3000/api/payments
+{
+  "orderId": 8034,
+  "paymentMethodId": 1,
+  "shiftId": 84,
+  "processedByUserId": 11,
+  "amount": 2950,
+  "referenceNumber": "POS-0001"
+}
+```
+Response:
+```json
+{
+  "id": "9001",
+  "orderId": "8034",
+  "paymentMethodId": "1",
+  "shiftId": "84",
+  "processedByUserId": "11",
+  "amount": "2950",
+  "paidAt": "2025-12-20T03:20:00.000Z"
+}
+```
+
+2) List payments by order
+```
+GET http://localhost:3000/api/payments/order/8034
+```
+Response:
+```json
+[
+  {
+    "id": "9001",
+    "orderId": "8034",
+    "amount": "2950"
+  }
+]
+```
+
+Invoices:
+
+1) Create invoice
+```
+POST http://localhost:3000/api/invoices
+{
+  "orderId": 8034,
+  "documentType": "boleta",
+  "series": "B001",
+  "documentNumber": "00001234"
+}
+```
+Response:
+```json
+{
+  "id": "5001",
+  "orderId": "8034",
+  "documentType": "boleta",
+  "series": "B001",
+  "documentNumber": "00001234",
+  "totalAmount": "2950"
+}
+```
+
+Validators:
+
+1) Consistency report (json)
+```
+GET http://localhost:3000/api/validators/consistency?format=json&limit=50
+```
+Response:
+```json
+{
+  "generatedAt": "2025-12-20T03:30:00.000Z",
+  "orderTotalsMismatch": {
+    "count": 0,
+    "sample": []
+  },
+  "orderItemOrphans": {
+    "count": 0,
+    "sample": []
+  },
+  "paymentOrphans": {
+    "count": 0,
+    "sample": []
+  },
+  "invoiceOrphans": {
+    "count": 0,
+    "sample": []
+  }
+}
+```
+
+2) Consistency report (markdown)
+```
+GET http://localhost:3000/api/validators/consistency?format=md&limit=50
+```
+Response:
+```
+# Phase 4.2 Validation Report
+
+Generated at: 2025-12-20T03:30:00.000Z
+
+## Order totals mismatch
+Count: 0
 ```

@@ -1,4 +1,4 @@
-import { Prisma, OrderStatus, OrderItemStatus, ShiftStatus, DrawerEventType, TableStatus } from '@prisma/client';
+import { Prisma, OrderStatus, OrderItemStatus, ShiftStatus, DrawerEventType, TableStatus, DocumentType } from '@prisma/client';
 import { ValidationError } from '../../common/errors/typed-errors';
 
 type Primitive = string | number | boolean | null | undefined;
@@ -160,4 +160,16 @@ export function parseTableStatus(value: unknown): TableStatus {
     return candidate as TableStatus;
   }
   throw new ValidationError('invalid table status', { value: candidate });
+}
+
+export function parseDocumentType(value: unknown): DocumentType {
+  const candidate = firstValue(value);
+  if (candidate === undefined || candidate === null || candidate === '') {
+    throw new ValidationError('documentType is required', { field: 'documentType' });
+  }
+  const allowed = new Set(Object.values(DocumentType));
+  if (typeof candidate === 'string' && allowed.has(candidate as DocumentType)) {
+    return candidate as DocumentType;
+  }
+  throw new ValidationError('invalid document type', { value: candidate });
 }
