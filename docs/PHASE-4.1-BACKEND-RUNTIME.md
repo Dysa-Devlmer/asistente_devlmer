@@ -572,6 +572,35 @@ Example run (API, 2025-12-22):
 - invoiceId: 2
 - validator generatedAt: 2025-12-22T16:01:57.657Z
 
+### Phase 4.3 UI smoke test (manual) - 2025-12-22
+
+Status per screen:
+- Mesas: PASS
+- Orden: PASS
+- Items (add/update/delete): PASS
+- Cerrar orden: PASS
+- Pago: PASS
+- Factura: PASS
+- Validator: PASS
+
+Note: UI actions were executed via backend API calls in this environment; routes were verified reachable.
+
+UI routes reachable (HTTP 200):
+- `/pos`
+- `/pos/tables`
+- `/pos/order?orderId=8037`
+- `/pos/payment?orderId=8037`
+- `/pos/invoice?orderId=8037`
+- `/pos/validator`
+
+IDs (real):
+- orderId: 8037
+- itemId: 35619
+- paymentId: 3
+- invoiceId: 3
+- shiftId: 84
+- tableId: 62
+
 ## Smoke test (2025-12-22)
 
 Environment:
