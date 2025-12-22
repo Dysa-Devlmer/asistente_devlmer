@@ -109,6 +109,7 @@
     "react-router-dom": "^7.11.0",
     "simple-git": "^3.20.0",
     "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.2",
     "sqlite3": "^5.1.6",
     "ssh2": "^1.14.0",
     "systeminformation": "^5.27.11",

@@ -342,3 +342,126 @@ export interface ProductFilters {
   activo?: boolean;
   search?: string;
 }
+
+// ============================================================================
+// Kitchen Types
+// ============================================================================
+
+export interface KitchenItem {
+  id_venta: number;
+  id_linea: number;
+  cantidad: number;
+  cocina: number;
+  servido_cocina: number;
+  bloque_cocina: number;
+  complementog: string;
+  nota: string | null;
+  observaciones: string | null;
+  num_mesa: string;
+  fecha_venta: string;
+  hora: string;
+  id_camarero: string;
+  pendingQty: number;
+}
+
+export interface KitchenOrder {
+  id_venta: number;
+  mesa: string;
+  orderTime: string;
+  items: KitchenItem[];
+  itemsByStation: Map<number, KitchenItem[]>;
+}
+
+export interface KitchenStats {
+  totalOrders: number;
+  totalItems: number;
+  byStation: {
+    [station: number]: {
+      orders: number;
+      items: number;
+    };
+  };
+  oldestOrder?: {
+    id_venta: number;
+    mesa: string;
+    waitTime: number;
+  };
+}
+
+export interface KitchenItemsResponse {
+  items: KitchenItem[];
+  summary: {
+    totalPending: number;
+    byStation: {
+      [station: number]: number;
+    };
+  };
+}
+
+export interface MarkServedRequest {
+  quantity?: number;
+}
+
+export interface MarkServedResponse {
+  id_venta: number;
+  id_linea: number;
+  previousServed: number;
+  newServed: number;
+  remaining: number;
+}
+
+export interface MarkAllServedRequest {
+  id_venta: number;
+  bloque_cocina?: number;
+}
+
+export interface MarkAllServedResponse {
+  id_venta: number;
+  itemsUpdated: number;
+}
+
+export const KITCHEN_STATIONS = {
+  1: { name: 'Parrilla', color: 'bg-red-500', textColor: 'text-red-700' },
+  2: { name: 'Estación Fría', color: 'bg-blue-500', textColor: 'text-blue-700' },
+  3: { name: 'Estación Caliente', color: 'bg-orange-500', textColor: 'text-orange-700' },
+  4: { name: 'Barra', color: 'bg-purple-500', textColor: 'text-purple-700' },
+} as const;
+
+export type KitchenStationId = keyof typeof KITCHEN_STATIONS;
+
+// WebSocket Events
+export interface KitchenWebSocketEvents {
+  'kitchen:new_items': {
+    id_venta: number;
+    items: Array<{
+      id_linea: number;
+      complementog: string;
+      cantidad: number;
+      bloque_cocina: number;
+      nota: string | null;
+      observaciones: string | null;
+    }>;
+    mesa: string;
+    camarero: string;
+  };
+  'kitchen:item_served': {
+    id_venta: number;
+    id_linea: number;
+    served_qty: number;
+    remaining_qty: number;
+  };
+  'kitchen:order_updated': {
+    id_venta: number;
+    action: 'line_added' | 'line_deleted' | 'line_updated';
+  };
+  'kitchen:order_completed': {
+    id_venta: number;
+    bloque_cocina?: number;
+    items_updated: number;
+  };
+}
+
+export interface WebSocketEvent {
+  event: string;
+  data: any;
+}

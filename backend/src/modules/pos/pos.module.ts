@@ -10,9 +10,11 @@ import { createValidatorsRouter } from './validators.routes';
 // MISTURA-compliant routes (new implementation)
 import { createTablesRouter } from './routes/tables';
 import { createSalesRouter } from './routes/sales';
+import { createKitchenRoutes } from './routes/kitchen';
 import { postgresPool } from '../../config/postgres';
+import { WebSocketService } from '../../services/WebSocketService';
 
-export function createPosRouter(): Router {
+export function createPosRouter(wsService?: WebSocketService): Router {
   const router = Router();
 
   // Legacy routes (existing functionality)
@@ -26,6 +28,7 @@ export function createPosRouter(): Router {
   // These routes take precedence for the POS interface
   router.use('/pos/tables', createTablesRouter(postgresPool));
   router.use('/pos/sales', createSalesRouter(postgresPool));
+  router.use('/pos/kitchen', createKitchenRoutes(wsService));
 
   // Keep legacy tables and orders routes for backwards compatibility
   router.use('/tables', createLegacyTablesRouter());
