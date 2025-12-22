@@ -41,6 +41,9 @@ start "POS Frontend" cmd /k "npm run dev"
 
 timeout /t 5 /nobreak >nul
 
+REM Abrir navegador en POS
+start "" "http://localhost:5173/"
+
 echo.
 echo [4/4] Sistema listo
 echo.
@@ -57,9 +60,9 @@ echo.
 pause >nul
 
 REM Detener todo
-call scripts\stop-db.bat
-taskkill /FI "WindowTitle eq POS Backend*" /F >nul 2>&1
 taskkill /FI "WindowTitle eq POS Frontend*" /F >nul 2>&1
+taskkill /FI "WindowTitle eq POS Backend*" /F >nul 2>&1
+call scripts\stop-db.bat
 
 echo.
 echo Sistema detenido.

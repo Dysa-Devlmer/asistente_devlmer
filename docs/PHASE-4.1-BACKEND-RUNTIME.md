@@ -95,6 +95,17 @@ Stop:
 - `GET /api/jarvis/status`
 - `POST /api/jarvis/chat` (stub, no command execution)
 
+## Launcher smoke test (start-pos/stop-pos)
+
+Start:
+1) `start-pos.bat` opens POS at `http://localhost:5173/`
+2) Verify routes: `/`, `/pos/tables`, `/jarvis`
+3) netstat shows listeners on 3000/5173/5432
+
+Stop:
+1) `stop-pos.bat`
+2) netstat shows no LISTENING on 3000/5173/5432 (TIME_WAIT entries may remain briefly)
+
 ## Smoke test (2025-12-20)
 
 Environment:
