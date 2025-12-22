@@ -370,3 +370,20 @@ Generated at: 2025-12-20T03:30:00.000Z
 ## Order totals mismatch
 Count: 0
 ```
+
+## Smoke test (2025-12-22)
+
+Environment:
+- Command: `scripts\\start-db.bat`
+- Command: `cd backend && npm run dev`
+- DB: local embedded PostgreSQL on port 5432
+
+Results:
+- Product: id 9 (*Amaretto Sour)
+- Table: id 62 (MESA_SISTEMA)
+- Shift: id 84 (cash register 1)
+- Order: id 8035 (status closed)
+- Order item: id 35617 (status sent_to_kitchen)
+- Payment: id 1 (amount 1000)
+- Invoice: id 1 (total 2950)
+- Validator: generatedAt 2025-12-22
