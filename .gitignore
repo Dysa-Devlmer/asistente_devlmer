@@ -59,4 +59,32 @@ temp/
 tmp/
 *.tmp
 NUL
+
+# Archived/Obsolete
+archive/
+archive_temp/
 J.A.R.V.I.S/
+
+# Old JARVIS files (prevent re-adding)
+*jarvis*.cjs
+*jarvis*.js
+test-*.cjs
+test-*.js
+install.js
+
+# Old documentation (keep only PROJECT_ARCHITECTURE.md and docs/)
+AGENTS.md
+ARTEFACTOS-README.md
+CONTRIBUTING.md
+DEPLOYMENT-GUIDE.md
+EMPIEZA-AQUI.txt
+ENTREGA-FASE*.md
+ESTADO-ACTUAL.md
+FASE-*.md
+METRICS-PERSISTENCE.md
+PASO-*.md
+PUNTO-CONTINUACION*.md
+QUICKSTART.md
+QUICK-START*.md
+README-OLD.md
+README-JARVIS.md

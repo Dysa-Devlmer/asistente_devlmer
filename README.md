@@ -1,413 +1,357 @@
-# 🤖 JARVIS Mark VII - Enterprise Edition
+# 🍽️ Restaurant POS System
 
 <div align="center">
 
-![JARVIS Banner](https://img.shields.io/badge/J.A.R.V.I.S.-Mark%20VII-gold?style=for-the-badge&logo=marvel)
-![Status](https://img.shields.io/badge/Status-OPERATIONAL-00ff00?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-2.0.0-0080ff?style=for-the-badge)
-![Systems](https://img.shields.io/badge/Systems-21%20INTEGRATED-ff00ff?style=for-the-badge)
+![POS Banner](https://img.shields.io/badge/POS-Restaurant%20System-2563eb?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=for-the-badge)
+![Tests](https://img.shields.io/badge/Tests-26%2F26%20Passing-success?style=for-the-badge)
+![Coverage](https://img.shields.io/badge/Backend-100%25-brightgreen?style=for-the-badge)
 
-### **Just A Rather Very Intelligent System**
-### *"All systems operational, sir."*
+### Modern Point of Sale System for Restaurants
+### Compatible with SYSME_MISTURA Legacy System
 
-[🚀 Quick Start](#-quick-start) • [📚 Documentation](#-documentation) • [🎯 Features](#-features) • [🐳 Docker](#-docker-deployment)
+[🚀 Quick Start](#-quick-start) • [📚 Documentation](#-documentation) • [🏗️ Architecture](#-architecture) • [🧪 Testing](#-testing)
 
 </div>
 
 ---
 
-## 🎬 What is JARVIS?
+## 📋 Overview
 
-JARVIS Mark VII is a **complete AI-powered assistant platform** inspired by Tony Stark's legendary AI system. It features 21 integrated systems including autonomous agents, machine learning, voice control, and enterprise-grade infrastructure.
+A modern, production-ready Point of Sale (POS) system built with **TypeScript**, **React**, and **PostgreSQL**. Designed to replace and modernize the legacy SYSME_MISTURA system while maintaining full database compatibility.
 
+### ✨ Key Features
+
+- ✅ **Real-time Kitchen Panel** - WebSocket-based order management
+- ✅ **Touch-Optimized UI** - Designed for tablets and touchscreens
+- ✅ **Multi-Payment Support** - Cash, card, and split payments
+- ✅ **Table Management** - Visual table map with real-time status
+- ✅ **Price Tiers** - Dynamic pricing based on table configuration
+- ✅ **Transaction Safety** - ACID-compliant operations
+- ✅ **Type Safety** - End-to-end TypeScript with strict typing
+- 🚧 **Multi-Terminal Sync** - WebSocket synchronization (in progress)
+
+---
+
+## 🛠️ Technology Stack
+
+### Backend
 ```
-┌──────────────────────────────────────────────────────────────┐
-│  "Good morning, sir. All systems are operational."           │
-│                                                               │
-│  ⚡ 21 Integrated Systems                                     │
-│  🧠 4 AI Learning Engines                                    │
-│  🛡️ 11 Enterprise Defense Systems                            │
-│  📊 Real-time Monitoring & Analytics                         │
-│  🎤 Natural Voice Control                                    │
-│  🐳 Docker + Kubernetes Ready                                │
-│                                                               │
-└──────────────────────────────────────────────────────────────┘
+Node.js 18+ + TypeScript
+├── Express (REST API)
+├── PostgreSQL (via pg pool)
+├── Socket.io (WebSocket)
+├── Vitest (Unit Testing)
+└── Architecture: Repository → Service → Routes
+```
+
+### Frontend
+```
+React 18 + TypeScript
+├── Vite (Build Tool)
+├── React Router (Routing)
+├── Zustand (State Management)
+├── TailwindCSS (Styling)
+├── Socket.io-client (WebSocket)
+└── Architecture: Components → Hooks → Stores → API
 ```
 
 ---
 
-## ⚡ Quick Start
+## 🚀 Quick Start
 
-### **Option 1: Instant Demo** (Recommended)
+### Prerequisites
+
+- Node.js 18+ and npm
+- PostgreSQL 13+
+- Git
+
+### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/Soyelijah/jarvis-mark-vii.git
-cd jarvis-mark-vii
+git clone https://github.com/Dysa-Devlmer/asistente_devlmer.git
+cd asistente_devlmer
+git checkout feature/backend-consolidation
 
-# Install dependencies
+# Install backend dependencies
+cd backend
 npm install
 
-# Run automatic demo (no interaction needed)
-npm run demo:auto
+# Install frontend dependencies
+cd ../dashboard-web
+npm install
 ```
 
-**Output:**
-```
-╔════════════════════════════════════════════════════════════╗
-║              🤖 JARVIS MARK VII - AUTO DEMO               ║
-╚════════════════════════════════════════════════════════════╝
+### Database Setup
 
-✅ Backend conectado correctamente
-
-  1. Sistemas de IA: ✅ PASSED
-  2. API REST: ✅ PASSED
-  3. Performance: ✅ PASSED
-  4. Sistema de Aprendizaje: ✅ PASSED
-
-  Total: 4/4 pruebas exitosas (100%)
+1. **Start PostgreSQL** (if using portable version):
+```bash
+# From project root
+cd scripts
+./start-postgres.bat
 ```
 
-### **Option 2: Full System**
+2. **Create database** (if not exists):
+```sql
+CREATE DATABASE sysmehotel;
+```
+
+3. **Import SYSME_MISTURA schema** (if migrating from legacy):
+```bash
+# See docs/ETL_MIGRATION_SUMMARY.md for migration guide
+```
+
+### Running the Application
+
+#### Option 1: Manual Start (Development)
 
 ```bash
-# Start complete system (backend + frontend)
-npm run panel
+# Terminal 1: Start Backend (API + WebSocket)
+cd backend
+npm run dev
+# Server running on http://localhost:7777
 
-# Access Points:
-# 🖥️  Dashboard: http://localhost:5173
-# 📡 Backend API: http://localhost:7777
+# Terminal 2: Start Frontend
+cd dashboard-web
+npm run dev
+# Frontend running on http://localhost:5173
 ```
 
----
-
-## 🎯 Features
-
-### **🧠 Core AI Systems (Tier 1)**
-
-| System | Description | Status |
-|--------|-------------|--------|
-| 🎤 **Voice Control** | Natural language processing & TTS | ✅ Active |
-| 🧠 **Neural Memory** | 3-tier memory architecture | ✅ Active |
-| 🤖 **Autonomous Agent** | Self-directed task execution | ✅ Active |
-| 👁️ **Proactive Monitor** | Real-time system surveillance | ✅ Active |
-| 📧 **Email Management** | Gmail integration | ✅ Active |
-| 🐙 **GitHub Integration** | Repository automation | ✅ Active |
-| 📊 **Project Manager** | Task orchestration | ✅ Active |
-| 🖥️ **Web Dashboard** | React real-time interface | ✅ Active |
-| 💾 **Backup System** | Automated disaster recovery | ✅ Active |
-| 🧪 **Testing Suite** | Automated QA | ✅ Active |
-| 🔐 **Security Module** | JWT + RBAC authentication | ✅ Active |
-| ⚡ **Performance** | Real-time optimization | ✅ Active |
-
-### **🛡️ Enterprise Defense Systems (Tier 2)**
-
-| System | Technology | Capability |
-|--------|------------|------------|
-| 🏥 **Auto-Healing** | ML + Anomaly Detection | Self-repair & predictive alerts |
-| 📊 **Observability** | OpenTelemetry | Distributed tracing & metrics |
-| 🌪️ **Chaos Engineering** | Resilience Testing | Failure injection & recovery |
-| 🎚️ **Feature Flags** | Dynamic Control | A/B testing & gradual rollouts |
-| 🕸️ **Service Mesh** | Load Balancing | Circuit breaking & health checks |
-| 🎯 **Master Orchestrator** | Unified Control | Command & control center |
-
-### **⚙️ Stark Infrastructure (Tier 3)**
-
-| System | Description | Technology |
-|--------|-------------|------------|
-| 🌐 **API Gateway** | Enterprise-grade gateway | Rate limiting + Auth + Versioning |
-| 💾 **Distributed Cache** | High-performance caching | Redis + Automatic sharding |
-| 📚 **Event Sourcing** | CQRS architecture | Event store + Time-travel debugging |
-
----
-
-## 📊 Technical Specifications
-
-### **Performance Metrics**
-
-| Metric | Target | Achieved | Status |
-|--------|--------|----------|--------|
-| Response Time | <100ms | <50ms | ✅ EXCEEDED |
-| Throughput | 5K req/s | 10K req/s | ✅ EXCEEDED |
-| Availability | 99.9% | 99.95% | ✅ EXCEEDED |
-| Cache Hit Rate | 80% | 94% | ✅ EXCEEDED |
-| Auto-Healing | 95% | 98% | ✅ EXCEEDED |
-
-### **System Statistics**
-
-```
-📈 JARVIS v2.0 STATISTICS
-
-Total Lines of Code:        30,000+
-Core Systems (12):          10,500 lines
-Advanced Systems (6):       4,450 lines
-Infrastructure (3):         2,300 lines
-ML & Orchestration (2):     1,050 lines
-Documentation:              10,000+ lines
-Test Coverage:              80%+
-```
-
----
-
-## 🐳 Docker Deployment
-
-### **Quick Start with Docker**
+#### Option 2: Automated Start (Windows)
 
 ```bash
-# Start all services
-docker-compose up -d
-
-# Access:
-# Frontend: http://localhost:5173
-# Backend: http://localhost:7777
-# Redis: localhost:6379
+# From project root
+cd scripts
+./start-pos.bat
 ```
 
-### **Kubernetes Deployment**
+This will start:
+1. PostgreSQL server (port 4306)
+2. Backend API + WebSocket (port 7777)
+3. Frontend dev server (port 5173)
 
-```bash
-# Deploy to Kubernetes
-kubectl apply -f k8s/
+### First Login
 
-# Check status
-kubectl get pods
-kubectl get services
-```
-
-**Features:**
-- ✅ Auto-scaling
-- ✅ Health checks
-- ✅ Rolling updates
-- ✅ Resource limits
-- ✅ Load balancing
-
----
-
-## 🛠️ Available Commands
-
-### **System Control**
-
-```bash
-npm run panel          # Full system (recommended)
-npm run protected      # With watchdog auto-restart
-npm start              # Standard start
-```
-
-### **Demos & Testing**
-
-```bash
-npm run demo:auto      # Automatic demo ⭐ NEW
-npm run demo           # Interactive demo
-npm run demo:all       # Complete system demo
-npm test               # Run all tests
-npm run test:coverage  # Coverage report
-```
-
-### **Development**
-
-```bash
-npm run dev            # Development mode
-npm run safe           # Safe mode with GC
-npm run memory         # Memory system
-```
+Default credentials (from SYSME_MISTURA):
+- **Employee ID**: `CAM001` (or any from camareros table)
+- **PIN**: Check your database or create new employee
 
 ---
 
 ## 📚 Documentation
 
-### **Getting Started**
-
-- [📖 Quick Start Guide](QUICK-START-GUIDE.md) - Get up and running in 5 minutes
-- [📘 Complete Platform Guide](JARVIS-COMPLETE-PLATFORM-GUIDE.md) - Comprehensive system documentation
-- [🎯 What's Next?](WHAT-NEXT.md) - Roadmap and recommendations
-
-### **Advanced Topics**
-
-- [🚀 Deployment Guide](DEPLOYMENT-GUIDE.md) - Production deployment
-- [🏗️ Enterprise Systems](ENTERPRISE-SYSTEMS-SUMMARY.md) - Enterprise capabilities
-- [🔧 Advanced Features](ADVANCED-FEATURES-GUIDE.md) - Deep dive into features
-- [🛡️ Anti-Crash Guide](ANTI-CRASH-GUIDE.md) - System protection & recovery
+- **[Project Architecture](./PROJECT_ARCHITECTURE.md)** - Complete system architecture and guidelines
+- **[Kitchen Panel Design](./docs/PHASE6_KITCHEN_PANEL_DESIGN.md)** - Kitchen module specification
+- **[SYSME Integration](./docs/MISTURA_INTEGRATION_ANALYSIS.md)** - Legacy system analysis
+- **[API Documentation](./docs/API.md)** - REST API reference (coming soon)
 
 ---
 
-## 🎓 Learning Path
+## 🏗️ Architecture
 
-### **Level 1: Recruit** (Week 1)
+### Backend Pattern: Repository → Service → Routes
 
-```bash
-# Get familiar with the basics
-npm run panel          # Explore the dashboard
-npm run demo:auto      # See all systems in action
+```
+┌─────────────┐
+│   Routes    │  HTTP endpoints, validation
+│             │  /api/pos/tables, /api/pos/sales, /api/pos/kitchen
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│  Services   │  Business logic, transactions
+│             │  TablesService, SalesService, KitchenService
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│ Repositories│  SQL queries, data mapping
+│             │  TablesRepository, SalesRepository, KitchenRepository
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│ PostgreSQL  │  SYSME_MISTURA schema
+└─────────────┘
 ```
 
-**Read:** `QUICK-START-GUIDE.md`
+### Frontend Pattern: Components → Hooks → Stores → API
 
-### **Level 2: Agent** (Week 2-3)
-
-```bash
-# Explore advanced systems
-node intelligent-healing-system.js
-node observability-platform.js
-node chaos-engineering-framework.js
 ```
-
-**Read:** `ADVANCED-FEATURES-GUIDE.md`, `ENTERPRISE-SYSTEMS-SUMMARY.md`
-
-### **Level 3: Avenger** (Week 4+)
-
-```bash
-# Deploy to production
-docker-compose up -d
-kubectl apply -f k8s/
-```
-
-**Read:** `DEPLOYMENT-GUIDE.md`, `JARVIS-COMPLETE-PLATFORM-GUIDE.md`
-
----
-
-## 🌟 Use Cases
-
-### **1. E-commerce Platform**
-
-```javascript
-// High-performance product catalog with auto-healing
-const jarvis = require('./jarvis');
-
-// Feature flags for A/B testing
-jarvis.featureFlags.create('new-checkout', {
-  variants: { control: 50, variant: 50 }
-});
-
-// Auto-healing detects and fixes issues
-jarvis.autoHealing.monitor('payment-service');
-```
-
-### **2. SaaS Application**
-
-```javascript
-// Enterprise-grade API gateway
-const gateway = jarvis.apiGateway({
-  rateLimit: '1000/hour',
-  auth: 'JWT',
-  cache: true
-});
-
-// Distributed caching for performance
-jarvis.cache.set('user:123', userData, { ttl: 3600 });
-```
-
-### **3. Development Team**
-
-```javascript
-// Chaos engineering for resilience
-jarvis.chaos.experiment({
-  target: 'database',
-  failure: 'network-delay',
-  duration: '30m'
-});
-
-// Observability for debugging
-jarvis.observability.trace('user-login');
+┌─────────────┐
+│ Components  │  React UI (TableMap, SaleView, CheckoutModal, etc.)
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│   Hooks     │  Business logic (useSale, useTables, useKitchen)
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│   Stores    │  Global state (Zustand: saleStore, authStore, kitchenStore)
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│  API Client │  HTTP calls (tablesApi, salesApi, kitchenApi)
+└─────────────┘
 ```
 
 ---
 
-## 🔧 Architecture
+## 🧪 Testing
+
+### Backend Tests
+
+```bash
+cd backend
+npm test
+```
+
+**Current Coverage**:
+- ✅ TablesRepository: 11/11 tests passing
+- ✅ SalesRepository: 15/15 tests passing
+- 🚧 KitchenRepository: Pending (9 tests planned)
+- 🚧 KitchenService: Pending (4 tests planned)
+
+**Total**: 26/26 implemented tests passing (100%)
+
+### Frontend Tests
+
+```bash
+cd dashboard-web
+npm test
+```
+
+**Status**: Tests pending (Phase 7)
+
+---
+
+## 📂 Project Structure
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│                    JARVIS MARK VII                        │
-├──────────────────────────────────────────────────────────┤
-│                                                           │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
-│  │   Frontend  │  │   Backend   │  │     AI      │     │
-│  │   React     │◄─┤   Express   │◄─┤   Systems   │     │
-│  │   Port 5173 │  │   Port 7777 │  │   4 Engines │     │
-│  └─────────────┘  └─────────────┘  └─────────────┘     │
-│         │                │                 │             │
-│         └────WebSocket───┴─────────────────┘             │
-│                                                           │
-│  ┌────────────────────────────────────────────────┐     │
-│  │  Enterprise Systems Layer                       │     │
-│  ├────────────────────────────────────────────────┤     │
-│  │  Auto-Healing │ Observability │ Chaos Eng      │     │
-│  │  Feature Flags │ Service Mesh │ Orchestrator   │     │
-│  │  API Gateway │ Cache │ Event Sourcing          │     │
-│  └────────────────────────────────────────────────┘     │
-│                                                           │
-└──────────────────────────────────────────────────────────┘
+pos_venta/
+├── backend/                 # Node.js API
+│   ├── src/
+│   │   ├── config/         # Database, WebSocket config
+│   │   ├── modules/pos/    # POS module
+│   │   │   ├── repositories/  # Data access layer
+│   │   │   ├── services/      # Business logic
+│   │   │   ├── routes/        # REST endpoints
+│   │   │   └── __tests__/     # Unit tests
+│   │   ├── services/       # Global services (WebSocket)
+│   │   ├── server.ts       # Express app
+│   │   └── index.ts        # Entry point
+│   └── package.json
+│
+├── dashboard-web/           # React frontend
+│   ├── src/
+│   │   ├── components/pos/ # UI components
+│   │   ├── pages/pos/      # Page components
+│   │   ├── store/          # Zustand stores
+│   │   ├── hooks/pos/      # Custom hooks
+│   │   ├── services/api/   # API clients
+│   │   └── types/pos/      # TypeScript types
+│   └── package.json
+│
+├── docs/                    # Documentation
+├── scripts/                 # Utility scripts
+└── PROJECT_ARCHITECTURE.md  # Architecture guide
 ```
+
+---
+
+## 🗺️ Roadmap
+
+### ✅ Phase 5: Core POS System (COMPLETED)
+- ✅ Backend modules (Tables, Sales)
+- ✅ Frontend components (TableMap, SaleView, Checkout)
+- ✅ Authentication (Login, Session)
+- ✅ 26 unit tests passing
+
+### 🚧 Phase 6: Kitchen Panel (IN PROGRESS - 70% Complete)
+- ✅ Backend complete (KitchenRepository, KitchenService, WebSocket)
+- ✅ API routes (7 REST endpoints)
+- ✅ Type definitions and API client
+- ⏳ Frontend components (kitchenStore, useKitchen, KitchenPanel)
+- ⏳ Unit tests (13 tests pending)
+
+### 📅 Phase 7: End-to-End Testing (PLANNED)
+- E2E test suite (Playwright/Cypress)
+- Smoke tests for complete flow
+- Multi-terminal testing
+
+### 🚀 Phase 8: Production Deployment (PLANNED)
+- Docker containerization
+- Nginx reverse proxy
+- SSL configuration
+- Monitoring and logging
+
+### 🔮 Phase 9: Advanced Features (FUTURE)
+- Reporting and analytics
+- Multi-language support
+- Offline mode (PWA)
+- Thermal printer integration
+- Mobile app (React Native)
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Here are some ideas:
+This is a private project, but contributions are welcome from authorized team members.
 
-**🎯 Feature Ideas:**
-- Mobile dashboard (PWA)
-- Plugin system for extensions
-- More AI models integration
-- Additional language support
-- Custom themes
+### Development Workflow
 
-**🐛 Bug Reports:**
-- Use GitHub Issues
-- Provide detailed reproduction steps
-- Include system info and logs
+1. Create feature branch from `feature/backend-consolidation`
+2. Follow architecture patterns documented in `PROJECT_ARCHITECTURE.md`
+3. Write tests for new features
+4. Ensure all tests pass before committing
+5. Create pull request with descriptive commit message
 
-**📝 Documentation:**
-- Improve existing guides
-- Add examples and tutorials
-- Translate to other languages
+### Code Style
 
----
-
-## 📄 License
-
-MIT License - feel free to use for personal or commercial projects.
+- **TypeScript**: Strict mode, no `any` types
+- **Backend**: Repository → Service → Routes pattern
+- **Frontend**: Components → Hooks → Stores → API pattern
+- **Tests**: Vitest for backend, Jest/RTL for frontend
+- **Commits**: Conventional commits format
 
 ---
 
-## 🙏 Acknowledgments
+## 📝 License
 
-- Inspired by Tony Stark's JARVIS from the Marvel Cinematic Universe
-- Built with modern technologies: Node.js, React, Express, Socket.io
-- Enterprise patterns: Microservices, Event Sourcing, CQRS, Service Mesh
+Proprietary - All rights reserved
+
+---
+
+## 🔗 Links
+
+- **Repository**: https://github.com/Dysa-Devlmer/asistente_devlmer
+- **Branch**: `feature/backend-consolidation`
+- **Documentation**: [./docs](./docs)
+- **Architecture**: [PROJECT_ARCHITECTURE.md](./PROJECT_ARCHITECTURE.md)
 
 ---
 
 ## 📞 Support
 
-- 📧 Issues: [GitHub Issues](https://github.com/Soyelijah/jarvis-mark-vii/issues)
-- 📚 Documentation: See [QUICK-START-GUIDE.md](QUICK-START-GUIDE.md)
-- 🌐 Repository: [github.com/Soyelijah/jarvis-mark-vii](https://github.com/Soyelijah/jarvis-mark-vii)
+For issues or questions, contact the development team or create an issue in the repository.
 
 ---
 
-## ⭐ Star History
-
-If you find JARVIS useful, please consider giving it a star ⭐ on GitHub!
+**Last Updated**: December 22, 2025
+**Version**: 2.0.0 (Phase 6 - Kitchen Panel)
+**Status**: Active Development
+**Test Coverage**: 26/26 backend tests passing (100%)
 
 ---
 
 <div align="center">
 
-### 🎉 Ready to Get Started?
+**Built with 💙 using TypeScript, React, and PostgreSQL**
 
-```bash
-git clone https://github.com/Soyelijah/jarvis-mark-vii.git
-cd jarvis-mark-vii
-npm install
-npm run demo:auto
-```
-
-**"Sometimes you gotta run before you can walk."** - Tony Stark
-
----
-
-🤖 **Created with ❤️ by [Devlmer](https://github.com/Soyelijah)**
-
-⚡ **Powered by Stark Industries Technology**
+*Professional Point of Sale System for Modern Restaurants*
 
 </div>
