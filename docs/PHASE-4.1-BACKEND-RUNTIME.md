@@ -88,7 +88,12 @@ Stop:
 ## UI routing (Phase 4.3)
 
 - POS is the default app at `/` (opens Tables flow).
-- JARVIS is secondary at `/jarvis` (assistant/chat panels).
+- JARVIS is secondary at `/jarvis` (assistant only, no dashboard).
+
+## POS assistant (UI)
+
+- POS shows a small "Asistente" button (bottom-right).
+- Opens a chat modal using `POST /api/jarvis/chat` (stub).
 
 ## Jarvis API stubs
 
@@ -105,6 +110,16 @@ Start:
 Stop:
 1) `stop-pos.bat`
 2) netstat shows no LISTENING on 3000/5173/5432 (TIME_WAIT entries may remain briefly)
+
+### POS assistant smoke test (2025-12-22)
+
+Start:
+1) `start-pos.bat`
+2) Frontend routes: `/`, `/pos/tables`, `/jarvis`
+3) Backend: `POST /api/jarvis/chat` returns stub reply
+
+Notes:
+- Manual UI check: POS loads at `/`, no JARVIS menu visible, "Asistente" button opens chat modal.
 
 ## Smoke test (2025-12-20)
 

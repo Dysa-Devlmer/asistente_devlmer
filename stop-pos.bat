@@ -27,6 +27,11 @@ if %errorlevel% equ 0 (
 )
 
 echo.
+echo Verificando listeners residuales...
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr :5173 ^| findstr LISTENING') do taskkill /F /PID %%a >nul 2>&1
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr :3000 ^| findstr LISTENING') do taskkill /F /PID %%a >nul 2>&1
+
+echo.
 echo [3/3] Deteniendo PostgreSQL...
 call scripts\stop-db.bat
 
