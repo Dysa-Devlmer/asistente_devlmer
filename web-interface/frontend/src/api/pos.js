@@ -25,6 +25,9 @@ export const createOrder = (payload) =>
 export const getOrder = (id) =>
   client.get(`/orders/${id}`);
 
+export const updateOrder = (id, payload) =>
+  client.patch(`/orders/${id}`, payload);
+
 export const addItem = (orderId, payload) =>
   client.post(`/orders/${orderId}/items`, payload);
 

@@ -432,6 +432,35 @@ Test:
 4) Use "Cancelar" to set status `cancelled`
 5) Use "Eliminar" to delete item (DELETE route)
 
+### Step 5 - Close order
+
+Files updated:
+- `web-interface/frontend/src/pages/pos/Order.jsx`
+- `web-interface/frontend/src/api/pos.js`
+
+Test:
+1) Create an order and add at least one item
+2) Click "Cerrar orden"
+3) Expect order status `closed` and `closedAt` present if backend returns it
+
+Example request:
+```
+PATCH http://localhost:3000/api/orders/:id
+{
+  "status": "closed"
+}
+```
+
+Example response:
+```json
+{
+  "id": "8035",
+  "status": "closed",
+  "closedAt": "2025-12-22T13:20:00.000Z",
+  "totalAmount": "2950"
+}
+```
+
 ## Smoke test (2025-12-22)
 
 Environment:

@@ -6,7 +6,8 @@ import {
   getOpenShift,
   getOrder,
   removeItem,
-  updateItem
+  updateItem,
+  updateOrder
 } from '../../api/pos';
 
 const parseNumber = (value) => {
@@ -154,6 +155,20 @@ function Order({ onNavigate }) {
     }
   };
 
+  const handleCloseOrder = async () => {
+    if (!orderId) return;
+    setLoading(true);
+    setError('');
+    try {
+      await updateOrder(orderId, { status: 'closed' });
+      await loadOrder(orderId);
+    } catch (err) {
+      setError(err.message || 'Error cerrando orden.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="space-y-6">
       <div className="flex items-center justify-between">
@@ -245,6 +260,18 @@ function Order({ onNavigate }) {
             </div>
             {order.notes && (
               <div className="text-gray-500">Notes: {order.notes}</div>
+            )}
+            {order.closedAt && (
+              <div className="text-gray-500">Closed at: {order.closedAt}</div>
+            )}
+            {order.status !== 'closed' && (
+              <button
+                onClick={handleCloseOrder}
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded text-sm"
+                disabled={loading}
+              >
+                {loading ? 'Cerrando...' : 'Cerrar orden'}
+              </button>
             )}
 
             <div className="border-t border-gray-700 pt-4 space-y-3">
