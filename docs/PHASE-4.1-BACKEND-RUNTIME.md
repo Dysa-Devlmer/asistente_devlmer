@@ -553,6 +553,25 @@ Example request:
 GET http://localhost:3000/api/validators/consistency?format=json&limit=50
 ```
 
+### Phase 4.3 UI smoke test (manual)
+
+Flow:
+1) Mesas: seleccionar mesa (preferir disponible, fallback MESA_SISTEMA)
+2) Orden: crear orden, agregar item, cerrar orden
+3) Pago: registrar pago
+4) Factura: crear factura
+5) Validator: ejecutar consistency
+
+Example run (API, 2025-12-22):
+- tableId: 62
+- productId: 9
+- shiftId: 84
+- orderId: 8036 (status closed)
+- itemId: 35618
+- paymentId: 2
+- invoiceId: 2
+- validator generatedAt: 2025-12-22T16:01:57.657Z
+
 ## Smoke test (2025-12-22)
 
 Environment:
