@@ -10,6 +10,7 @@ import Tables from './pages/pos/Tables';
 import Order from './pages/pos/Order';
 import Payment from './pages/pos/Payment';
 import Invoice from './pages/pos/Invoice';
+import Validator from './pages/pos/Validator';
 import MemoriesPanel from './components/MemoriesPanel';
 import TasksPanel from './components/TasksPanel';
 import ProjectsPanel from './components/ProjectsPanel';
@@ -177,6 +178,9 @@ function App() {
     }
     if (routePath.startsWith('/pos/invoice')) {
       return <Invoice onNavigate={navigateTo} />;
+    }
+    if (routePath.startsWith('/pos/validator')) {
+      return <Validator onNavigate={navigateTo} />;
     }
     return <PosHome onNavigate={navigateTo} />;
   };

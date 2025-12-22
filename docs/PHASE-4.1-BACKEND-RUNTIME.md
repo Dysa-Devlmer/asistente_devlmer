@@ -537,6 +537,22 @@ Example response:
 }
 ```
 
+### Step 8 - Validator
+
+Files added/updated:
+- `web-interface/frontend/src/pages/pos/Validator.jsx`
+- `web-interface/frontend/src/pages/pos/Invoice.jsx`
+- `web-interface/frontend/src/App.jsx`
+
+Test:
+1) From Factura, click "Ir a validator"
+2) Confirm counts and generated timestamp
+
+Example request:
+```
+GET http://localhost:3000/api/validators/consistency?format=json&limit=50
+```
+
 ## Smoke test (2025-12-22)
 
 Environment:

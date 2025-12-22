@@ -102,6 +102,12 @@ function Invoice({ onNavigate }) {
             Volver a pago
           </button>
           <button
+            onClick={() => onNavigate?.('/pos/validator')}
+            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm"
+          >
+            Ir a validator
+          </button>
+          <button
             onClick={() => loadInvoice(orderId)}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-sm"
             disabled={loading || !orderId}
