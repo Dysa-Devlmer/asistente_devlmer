@@ -371,6 +371,28 @@ Generated at: 2025-12-20T03:30:00.000Z
 Count: 0
 ```
 
+## Phase 4.3 - POS UI wiring (MVP)
+
+### Step 1 - POS Home connectivity
+
+Files added:
+- `web-interface/frontend/src/api/client.js`
+- `web-interface/frontend/src/api/pos.js`
+- `web-interface/frontend/src/pages/pos/PosHome.jsx`
+
+UI:
+- Menu "POS" and route `/pos`.
+
+How to run:
+1) `cd web-interface/frontend`
+2) `npm install` (if missing)
+3) `npm run dev`
+4) Open `http://localhost:5173/pos`
+
+Test:
+- Click "Probar conexion" (GET `/api/validators/consistency?format=json&limit=1`)
+- Expect "OK - Validator generado: <timestamp>" or error message if backend is down.
+
 ## Smoke test (2025-12-22)
 
 Environment:

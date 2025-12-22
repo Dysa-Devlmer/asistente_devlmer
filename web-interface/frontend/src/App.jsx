@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import Dashboard from './pages/Dashboard';
+import PosHome from './pages/pos/PosHome';
 import MemoriesPanel from './components/MemoriesPanel';
 import TasksPanel from './components/TasksPanel';
 import ProjectsPanel from './components/ProjectsPanel';
@@ -31,6 +32,7 @@ function App() {
   const [activePanel, setActivePanel] = useState('chat');
   const [connected, setConnected] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [routePath, setRoutePath] = useState(window.location.pathname || '/');
 
   // Connect socket
   useEffect(() => {
@@ -130,6 +132,35 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, []);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname || '/';
+      setRoutePath(path);
+      if (path.startsWith('/pos')) {
+        setActivePanel('pos');
+      } else if (activePanel === 'pos') {
+        setActivePanel('chat');
+      }
+    };
+
+    if (routePath.startsWith('/pos')) {
+      setActivePanel('pos');
+    }
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [routePath, activePanel]);
+
+  const navigateTo = (path) => {
+    if (window.location.pathname !== path) {
+      window.history.pushState({}, '', path);
+    }
+    setRoutePath(path);
+    if (path.startsWith('/pos')) {
+      setActivePanel('pos');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
@@ -170,6 +201,7 @@ function App() {
       <nav className="bg-gray-800 border-b border-gray-700 shadow">
         <div className="container mx-auto p-2 flex gap-2">
           {[
+            { id: 'pos', label: 'POS', icon: 'pos' },
             { id: 'master', label: '⚙️ Master Control', icon: '⚙️' },
             { id: 'chat', label: '💬 Chat', icon: '💬' },
             { id: 'aibrain', label: '🧠 AI Brain', icon: '🧠' },
@@ -185,7 +217,16 @@ function App() {
           ].map(panel => (
             <button
               key={panel.id}
-              onClick={() => setActivePanel(panel.id)}
+              onClick={() => {
+                if (panel.id === 'pos') {
+                  navigateTo('/pos');
+                  return;
+                }
+                if (activePanel === 'pos') {
+                  navigateTo('/');
+                }
+                setActivePanel(panel.id);
+              }}
               className={`px-4 py-2 rounded transition-colors ${
                 activePanel === panel.id
                   ? 'bg-blue-600 text-white shadow-lg'
@@ -202,6 +243,9 @@ function App() {
       <main className="container mx-auto p-6 pb-32">
         {activePanel === 'master' && (
           <MasterControl />
+        )}
+        {activePanel === 'pos' && (
+          <PosHome />
         )}
         {activePanel === 'chat' && (
           <ChatPanel socket={socket} connected={connected} />
