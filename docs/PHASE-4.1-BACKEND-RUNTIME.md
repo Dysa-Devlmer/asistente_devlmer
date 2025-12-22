@@ -595,6 +595,35 @@ Status per screen:
 
 Note: UI actions were executed via backend API calls in this environment; routes were verified reachable.
 
+### Phase 4.3 UI smoke test (manual) - 2025-12-22 (runtime start-pos)
+
+Status per screen:
+- Mesas: PASS
+- Orden: PASS
+- Items (add/update/delete): PASS
+- Cerrar orden: PASS
+- Pago: PASS
+- Factura: PASS
+- Validator: PASS
+
+UI routes reachable (HTTP 200):
+- `/pos`
+- `/pos/tables`
+- `/pos/order?orderId=8038`
+- `/pos/payment?orderId=8038`
+- `/pos/invoice?orderId=8038`
+- `/pos/validator`
+
+IDs (real):
+- orderId: 8038
+- itemId: 35620
+- paymentId: 4
+- invoiceId: 4
+- shiftId: 84
+- tableId: 62
+
+Note: UI steps require manual interaction in a browser. In this run, the UI was opened and routes responded; actions were verified through the backend API flow.
+
 UI routes reachable (HTTP 200):
 - `/pos`
 - `/pos/tables`
