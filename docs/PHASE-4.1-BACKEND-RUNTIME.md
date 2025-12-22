@@ -85,6 +85,16 @@ Stop:
 1) Run `stop-pos.bat` from repo root.
 2) PostgreSQL stops via `scripts\\stop-db.bat`.
 
+## UI routing (Phase 4.3)
+
+- POS is the default app at `/` (opens Tables flow).
+- JARVIS is secondary at `/jarvis` (assistant/chat panels).
+
+## Jarvis API stubs
+
+- `GET /api/jarvis/status`
+- `POST /api/jarvis/chat` (stub, no command execution)
+
 ## Smoke test (2025-12-20)
 
 Environment:
