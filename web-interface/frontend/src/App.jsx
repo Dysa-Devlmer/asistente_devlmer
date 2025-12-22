@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import PosHome from './pages/pos/PosHome';
 import Tables from './pages/pos/Tables';
 import Order from './pages/pos/Order';
+import Payment from './pages/pos/Payment';
 import MemoriesPanel from './components/MemoriesPanel';
 import TasksPanel from './components/TasksPanel';
 import ProjectsPanel from './components/ProjectsPanel';
@@ -169,6 +170,9 @@ function App() {
     }
     if (routePath.startsWith('/pos/order')) {
       return <Order onNavigate={navigateTo} />;
+    }
+    if (routePath.startsWith('/pos/payment')) {
+      return <Payment onNavigate={navigateTo} />;
     }
     return <PosHome onNavigate={navigateTo} />;
   };

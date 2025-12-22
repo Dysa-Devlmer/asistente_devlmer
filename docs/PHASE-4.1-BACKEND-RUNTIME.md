@@ -461,6 +461,44 @@ Example response:
 }
 ```
 
+### Step 6 - Payment
+
+Files added/updated:
+- `web-interface/frontend/src/pages/pos/Payment.jsx`
+- `web-interface/frontend/src/pages/pos/Order.jsx`
+- `web-interface/frontend/src/App.jsx`
+
+Test:
+1) Close an order and click "Ir a pago"
+2) Confirm shift abierto visible (first open shift)
+3) Fill payment fields and click "Registrar pago"
+
+Example request:
+```
+POST http://localhost:3000/api/payments
+{
+  "orderId": 8035,
+  "paymentMethodId": 1,
+  "shiftId": 84,
+  "processedByUserId": 11,
+  "amount": 2950,
+  "referenceNumber": "POS-0001"
+}
+```
+
+Example response:
+```json
+{
+  "id": "9001",
+  "orderId": "8035",
+  "paymentMethodId": "1",
+  "shiftId": "84",
+  "processedByUserId": "11",
+  "amount": "2950",
+  "paidAt": "2025-12-22T13:35:00.000Z"
+}
+```
+
 ## Smoke test (2025-12-22)
 
 Environment:
