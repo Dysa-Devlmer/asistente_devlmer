@@ -141,33 +141,41 @@ function App() {
     const handlePopState = () => {
       const path = window.location.pathname || '/';
       setRoutePath(path);
-      if (path.startsWith('/pos')) {
+      if (path === '/' || path.startsWith('/pos')) {
         setActivePanel('pos');
-      } else if (activePanel === 'pos') {
+      } else if (path.startsWith('/jarvis')) {
         setActivePanel('chat');
       }
     };
 
-    if (routePath.startsWith('/pos')) {
+    if (routePath === '/' || routePath.startsWith('/pos')) {
       setActivePanel('pos');
+    } else if (routePath.startsWith('/jarvis')) {
+      setActivePanel('chat');
     }
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [routePath, activePanel]);
+  }, [routePath]);
 
   const navigateTo = (path) => {
     if (window.location.pathname !== path) {
       window.history.pushState({}, '', path);
     }
     setRoutePath(path);
-    if (path.startsWith('/pos')) {
+    if (path === '/' || path.startsWith('/pos')) {
       setActivePanel('pos');
+    } else if (path.startsWith('/jarvis')) {
+      setActivePanel('chat');
     }
   };
 
   const renderPosRoute = () => {
-    if (routePath.startsWith('/pos/tables')) {
+    if (
+      routePath === '/' ||
+      routePath === '/pos' ||
+      routePath.startsWith('/pos/tables')
+    ) {
       return <Tables onNavigate={navigateTo} />;
     }
     if (routePath.startsWith('/pos/order')) {
@@ -226,6 +234,7 @@ function App() {
         <div className="container mx-auto p-2 flex gap-2">
           {[
             { id: 'pos', label: 'POS', icon: 'pos' },
+            { id: 'jarvis', label: 'JARVIS', icon: 'jarvis' },
             { id: 'master', label: '⚙️ Master Control', icon: '⚙️' },
             { id: 'chat', label: '💬 Chat', icon: '💬' },
             { id: 'aibrain', label: '🧠 AI Brain', icon: '🧠' },
@@ -243,11 +252,16 @@ function App() {
               key={panel.id}
               onClick={() => {
                 if (panel.id === 'pos') {
-                  navigateTo('/pos');
+                  navigateTo('/');
                   return;
                 }
-                if (activePanel === 'pos') {
-                  navigateTo('/');
+                if (panel.id === 'jarvis') {
+                  navigateTo('/jarvis');
+                  setActivePanel('chat');
+                  return;
+                }
+                if (routePath === '/' || routePath.startsWith('/pos')) {
+                  navigateTo('/jarvis');
                 }
                 setActivePanel(panel.id);
               }}
