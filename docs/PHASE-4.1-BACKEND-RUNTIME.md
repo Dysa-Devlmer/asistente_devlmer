@@ -393,6 +393,19 @@ Test:
 - Click "Probar conexion" (GET `/api/validators/consistency?format=json&limit=1`)
 - Expect "OK - Validator generado: <timestamp>" or error message if backend is down.
 
+### Step 2 - Tables screen
+
+Files added/updated:
+- `web-interface/frontend/src/pages/pos/Tables.jsx`
+- `web-interface/frontend/src/pages/pos/PosHome.jsx`
+- `web-interface/frontend/src/App.jsx`
+
+Test:
+1) Open `http://localhost:5173/pos`
+2) Click "Ir a mesas"
+3) Expect list of tables (prefer available). If none, MESA_SISTEMA is shown as fallback.
+4) Click "Crear orden" to navigate to `/pos/order?tableId=...` (Order page placeholder until next block).
+
 ## Smoke test (2025-12-22)
 
 Environment:

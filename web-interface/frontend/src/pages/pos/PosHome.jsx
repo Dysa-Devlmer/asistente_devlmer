@@ -7,7 +7,7 @@ const formatError = (error) => {
   return 'Error desconocido';
 };
 
-function PosHome() {
+function PosHome({ onNavigate }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
@@ -39,13 +39,21 @@ function PosHome() {
             Base URL: http://localhost:3000/api
           </p>
         </div>
-        <button
-          onClick={runCheck}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-sm"
-          disabled={loading}
-        >
-          {loading ? 'Probando...' : 'Probar conexion'}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => onNavigate?.('/pos/tables')}
+            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm"
+          >
+            Ir a mesas
+          </button>
+          <button
+            onClick={runCheck}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-sm"
+            disabled={loading}
+          >
+            {loading ? 'Probando...' : 'Probar conexion'}
+          </button>
+        </div>
       </div>
 
       <div className="bg-gray-800 border border-gray-700 rounded p-4">

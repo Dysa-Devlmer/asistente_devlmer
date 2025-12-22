@@ -6,6 +6,7 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import Dashboard from './pages/Dashboard';
 import PosHome from './pages/pos/PosHome';
+import Tables from './pages/pos/Tables';
 import MemoriesPanel from './components/MemoriesPanel';
 import TasksPanel from './components/TasksPanel';
 import ProjectsPanel from './components/ProjectsPanel';
@@ -161,6 +162,34 @@ function App() {
     }
   };
 
+  const renderPosRoute = () => {
+    if (routePath.startsWith('/pos/tables')) {
+      return <Tables onNavigate={navigateTo} />;
+    }
+    if (routePath.startsWith('/pos/order')) {
+      const params = new URLSearchParams(window.location.search);
+      const tableId = params.get('tableId');
+      return (
+        <div className="bg-gray-800 border border-gray-700 rounded p-4">
+          <h2 className="text-xl font-semibold">Orden</h2>
+          <p className="text-sm text-gray-400 mt-2">
+            TableId seleccionado: {tableId || 'N/A'}
+          </p>
+          <p className="text-sm text-gray-500 mt-1">
+            Pagina de orden pendiente en el siguiente bloque.
+          </p>
+          <button
+            onClick={() => navigateTo('/pos/tables')}
+            className="mt-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm"
+          >
+            Volver a mesas
+          </button>
+        </div>
+      );
+    }
+    return <PosHome onNavigate={navigateTo} />;
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
@@ -245,7 +274,7 @@ function App() {
           <MasterControl />
         )}
         {activePanel === 'pos' && (
-          <PosHome />
+          renderPosRoute()
         )}
         {activePanel === 'chat' && (
           <ChatPanel socket={socket} connected={connected} />
