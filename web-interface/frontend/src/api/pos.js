@@ -16,6 +16,9 @@ export const getOpenShift = async () => {
   return response.data?.data?.[0] ?? null;
 };
 
+export const listProducts = (params = {}) =>
+  client.get('/products', { params });
+
 export const createOrder = (payload) =>
   client.post('/orders', payload);
 

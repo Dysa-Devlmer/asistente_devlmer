@@ -419,6 +419,19 @@ Test:
 4) Fill guest count/notes and click "Crear orden"
 5) Expect order details with totals from backend
 
+### Step 4 - Order items (add/update/delete)
+
+Files updated:
+- `web-interface/frontend/src/pages/pos/Order.jsx`
+- `web-interface/frontend/src/api/pos.js`
+
+Test:
+1) On `/pos/order?orderId=...`, select a product and quantity
+2) Click "Agregar item" and confirm totals update from backend
+3) Use "Enviar" to set status `sent_to_kitchen`
+4) Use "Cancelar" to set status `cancelled`
+5) Use "Eliminar" to delete item (DELETE route)
+
 ## Smoke test (2025-12-22)
 
 Environment:
