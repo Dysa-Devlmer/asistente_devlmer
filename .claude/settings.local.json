@@ -133,7 +133,10 @@
       "Bash(etl-full-run.log)",
       "Bash(npx prisma db execute:*)",
       "Bash(tee:*)",
-      "Bash(\"E:/POS SYSME/Sysme_Principal/SYSME/sysmeserver/bin/mysql.exe\" -h 127.0.0.1 -P 4306 -u root -proot sysmehotel -e \"DESCRIBE apcajas;\")"
+      "Bash(\"E:/POS SYSME/Sysme_Principal/SYSME/sysmeserver/bin/mysql.exe\" -h 127.0.0.1 -P 4306 -u root -proot sysmehotel -e \"DESCRIBE apcajas;\")",
+      "Bash(gh api:*)",
+      "Bash(rm:*)",
+      "Bash(npm test:*)"
     ],
     "deny": [],
     "ask": []

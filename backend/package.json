@@ -32,13 +32,15 @@
     "express": "^4.21.2",
     "helmet": "^7.2.0",
     "morgan": "^1.10.1",
-    "mysql2": "^3.16.0"
+    "mysql2": "^3.16.0",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.12.1",
+    "@types/pg": "^8.16.0",
     "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^8.23.0",
     "@typescript-eslint/parser": "^8.23.0",
