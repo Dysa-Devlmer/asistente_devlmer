@@ -499,6 +499,44 @@ Example response:
 }
 ```
 
+### Step 7 - Invoice
+
+Files added/updated:
+- `web-interface/frontend/src/pages/pos/Invoice.jsx`
+- `web-interface/frontend/src/pages/pos/Payment.jsx`
+- `web-interface/frontend/src/App.jsx`
+- `web-interface/frontend/src/api/pos.js`
+
+Test:
+1) From Pago, click "Ir a factura"
+2) Confirm order status is `closed`
+3) Fill document type, series, document number
+4) Click "Crear factura"
+5) If order is not closed, backend should return error shown in UI
+
+Example request:
+```
+POST http://localhost:3000/api/invoices
+{
+  "orderId": 8035,
+  "documentType": "boleta",
+  "series": "B001",
+  "documentNumber": "00001234"
+}
+```
+
+Example response:
+```json
+{
+  "id": "5001",
+  "orderId": "8035",
+  "documentType": "boleta",
+  "series": "B001",
+  "documentNumber": "00001234",
+  "totalAmount": "2950"
+}
+```
+
 ## Smoke test (2025-12-22)
 
 Environment:

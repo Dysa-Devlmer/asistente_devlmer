@@ -9,6 +9,7 @@ import PosHome from './pages/pos/PosHome';
 import Tables from './pages/pos/Tables';
 import Order from './pages/pos/Order';
 import Payment from './pages/pos/Payment';
+import Invoice from './pages/pos/Invoice';
 import MemoriesPanel from './components/MemoriesPanel';
 import TasksPanel from './components/TasksPanel';
 import ProjectsPanel from './components/ProjectsPanel';
@@ -173,6 +174,9 @@ function App() {
     }
     if (routePath.startsWith('/pos/payment')) {
       return <Payment onNavigate={navigateTo} />;
+    }
+    if (routePath.startsWith('/pos/invoice')) {
+      return <Invoice onNavigate={navigateTo} />;
     }
     return <PosHome onNavigate={navigateTo} />;
   };

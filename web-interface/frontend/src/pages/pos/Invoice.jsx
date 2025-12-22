@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { createPayment, getOpenShift, getOrder } from '../../api/pos';
+import { createInvoice, getInvoiceByOrder, getOrder } from '../../api/pos';
 
 const parseNumber = (value) => {
   if (value === '' || value === null || value === undefined) return null;
@@ -7,7 +7,7 @@ const parseNumber = (value) => {
   return Number.isNaN(parsed) ? null : parsed;
 };
 
-function Payment({ onNavigate }) {
+function Invoice({ onNavigate }) {
   const params = useMemo(
     () => new URLSearchParams(window.location.search),
     []
@@ -16,26 +16,15 @@ function Payment({ onNavigate }) {
 
   const [orderId, setOrderId] = useState(initialOrderId || '');
   const [order, setOrder] = useState(null);
-  const [shift, setShift] = useState(null);
-  const [paymentMethodId, setPaymentMethodId] = useState('1');
-  const [processedByUserId, setProcessedByUserId] = useState('11');
-  const [amount, setAmount] = useState('');
-  const [referenceNumber, setReferenceNumber] = useState('');
+  const [invoice, setInvoice] = useState(null);
+  const [documentType, setDocumentType] = useState('boleta');
+  const [series, setSeries] = useState('B001');
+  const [documentNumber, setDocumentNumber] = useState('');
+  const [customerId, setCustomerId] = useState('');
+  const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [result, setResult] = useState(null);
-
-  const loadShift = async () => {
-    try {
-      const openShift = await getOpenShift();
-      setShift(openShift);
-      if (!openShift) {
-        setError('No hay shift abierto. Abre uno en backend.');
-      }
-    } catch (err) {
-      setError(err.message || 'Error cargando shift.');
-    }
-  };
 
   const loadOrder = async (id) => {
     if (!id) return;
@@ -44,9 +33,6 @@ function Payment({ onNavigate }) {
     try {
       const response = await getOrder(id);
       setOrder(response.data);
-      if (!amount) {
-        setAmount(response.data?.totalAmount || '');
-      }
     } catch (err) {
       setError(err.message || 'Error cargando orden.');
     } finally {
@@ -54,33 +40,46 @@ function Payment({ onNavigate }) {
     }
   };
 
-  useEffect(() => {
-    loadShift();
-  }, []);
+  const loadInvoice = async (id) => {
+    if (!id) return;
+    try {
+      const response = await getInvoiceByOrder(id);
+      setInvoice(response.data || null);
+    } catch (err) {
+      if (err.status === 404) {
+        setInvoice(null);
+        return;
+      }
+      setError(err.message || 'Error cargando factura.');
+    }
+  };
 
   useEffect(() => {
     if (orderId) {
       loadOrder(orderId);
+      loadInvoice(orderId);
     }
   }, [orderId]);
 
-  const handlePay = async () => {
+  const handleCreate = async () => {
     setLoading(true);
     setError('');
     setResult(null);
     try {
       const payload = {
         orderId: parseNumber(orderId),
-        paymentMethodId: parseNumber(paymentMethodId),
-        shiftId: parseNumber(shift?.id),
-        processedByUserId: parseNumber(processedByUserId),
-        amount: parseNumber(amount),
-        referenceNumber: referenceNumber || undefined
+        documentType,
+        series,
+        documentNumber,
+        customerId: parseNumber(customerId) || undefined,
+        notes: notes || undefined
       };
-      const response = await createPayment(payload);
+      const response = await createInvoice(payload);
       setResult(response.data);
+      await loadInvoice(orderId);
+      await loadOrder(orderId);
     } catch (err) {
-      setError(err.message || 'Error registrando pago.');
+      setError(err.message || 'Error creando factura.');
     } finally {
       setLoading(false);
     }
@@ -90,27 +89,20 @@ function Payment({ onNavigate }) {
     <section className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold">Pago</h2>
+          <h2 className="text-2xl font-semibold">Factura</h2>
           <p className="text-sm text-gray-400">
-            Registrar pago para orden cerrada.
+            Crear factura para orden cerrada.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => onNavigate?.(`/pos/order?orderId=${orderId}`)}
+            onClick={() => onNavigate?.(`/pos/payment?orderId=${orderId}`)}
             className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm"
           >
-            Volver a orden
+            Volver a pago
           </button>
           <button
-            onClick={() => onNavigate?.(`/pos/invoice?orderId=${orderId}`)}
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm"
-            disabled={!orderId}
-          >
-            Ir a factura
-          </button>
-          <button
-            onClick={() => loadOrder(orderId)}
+            onClick={() => loadInvoice(orderId)}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-sm"
             disabled={loading || !orderId}
           >
@@ -120,13 +112,15 @@ function Payment({ onNavigate }) {
       </div>
 
       <div className="bg-gray-800 border border-gray-700 rounded p-4 space-y-4">
-        <div className="text-sm text-gray-400">
-          Shift abierto: {shift ? `#${shift.id}` : 'No encontrado'}
-        </div>
         {error && <div className="text-sm text-red-400">{error}</div>}
         {order && (
           <div className="text-sm text-gray-300">
             Orden #{order.id} - {order.status} | Total: {order.totalAmount || '0'}
+          </div>
+        )}
+        {invoice && (
+          <div className="text-sm text-green-400">
+            Factura existente: #{invoice.id} ({invoice.documentType})
           </div>
         )}
 
@@ -141,54 +135,66 @@ function Payment({ onNavigate }) {
             />
           </label>
           <label className="text-sm text-gray-300">
-            Payment method ID
+            Document type
+            <select
+              className="mt-1 w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded"
+              value={documentType}
+              onChange={(e) => setDocumentType(e.target.value)}
+            >
+              <option value="boleta">boleta</option>
+              <option value="factura">factura</option>
+              <option value="ticket">ticket</option>
+            </select>
+          </label>
+          <label className="text-sm text-gray-300">
+            Series
             <input
               className="mt-1 w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded"
-              value={paymentMethodId}
-              onChange={(e) => setPaymentMethodId(e.target.value)}
+              value={series}
+              onChange={(e) => setSeries(e.target.value)}
+              placeholder="B001"
+            />
+          </label>
+          <label className="text-sm text-gray-300">
+            Document number
+            <input
+              className="mt-1 w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded"
+              value={documentNumber}
+              onChange={(e) => setDocumentNumber(e.target.value)}
+              placeholder="00001234"
+            />
+          </label>
+          <label className="text-sm text-gray-300">
+            Customer ID (optional)
+            <input
+              className="mt-1 w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded"
+              value={customerId}
+              onChange={(e) => setCustomerId(e.target.value)}
               placeholder="1"
             />
           </label>
-          <label className="text-sm text-gray-300">
-            Processed by user ID
-            <input
-              className="mt-1 w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded"
-              value={processedByUserId}
-              onChange={(e) => setProcessedByUserId(e.target.value)}
-              placeholder="11"
-            />
-          </label>
-          <label className="text-sm text-gray-300">
-            Amount
-            <input
-              className="mt-1 w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="2950"
-            />
-          </label>
           <label className="text-sm text-gray-300 md:col-span-2">
-            Reference number
+            Notes (optional)
             <input
               className="mt-1 w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded"
-              value={referenceNumber}
-              onChange={(e) => setReferenceNumber(e.target.value)}
-              placeholder="POS-0001"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Observaciones"
             />
           </label>
         </div>
 
         <div className="flex items-center gap-3">
           <button
-            onClick={handlePay}
+            onClick={handleCreate}
             className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded text-sm"
-            disabled={loading || !orderId || !shift}
+            disabled={loading || !orderId || !documentNumber}
           >
-            {loading ? 'Registrando...' : 'Registrar pago'}
+            {loading ? 'Creando...' : 'Crear factura'}
           </button>
           {result && (
             <div className="text-sm text-green-400">
-              Pago registrado: #{result.id}
+              Factura creada: #{result.id}
             </div>
           )}
         </div>
@@ -197,4 +203,4 @@ function Payment({ onNavigate }) {
   );
 }
 
-export default Payment;
+export default Invoice;

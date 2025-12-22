@@ -51,5 +51,8 @@ export const createPayment = (payload) =>
 export const createInvoice = (payload) =>
   client.post('/invoices', payload);
 
+export const getInvoiceByOrder = (orderId) =>
+  client.get(`/invoices/order/${orderId}`);
+
 export const getConsistency = (params = {}) =>
   client.get('/validators/consistency', { params });
