@@ -406,6 +406,19 @@ Test:
 3) Expect list of tables (prefer available). If none, MESA_SISTEMA is shown as fallback.
 4) Click "Crear orden" to navigate to `/pos/order?tableId=...` (Order page placeholder until next block).
 
+### Step 3 - Order create/view
+
+Files added:
+- `web-interface/frontend/src/pages/pos/Order.jsx`
+- `web-interface/frontend/src/App.jsx`
+
+Test:
+1) Open `http://localhost:5173/pos/tables`
+2) Select a table and click "Crear orden"
+3) On `/pos/order?tableId=...`, confirm open shift is shown
+4) Fill guest count/notes and click "Crear orden"
+5) Expect order details with totals from backend
+
 ## Smoke test (2025-12-22)
 
 Environment:
