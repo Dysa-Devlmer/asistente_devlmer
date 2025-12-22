@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import healthRouter from './routes/health';
 import { createPosRouter } from './modules/pos/pos.module';
+import { createJarvisRouter } from './modules/jarvis/jarvis.module';
 import { requestIdMiddleware } from './common/middleware/request-id.middleware';
 import { requestLoggerMiddleware } from './common/middleware/request-logger.middleware';
 import { errorHandlerMiddleware } from './common/middleware/error-handler.middleware';
@@ -28,6 +29,7 @@ export function createServer(): Application {
 
   // Routes
   app.use(healthRouter);
+  app.use('/api/jarvis', createJarvisRouter());
   app.use('/api', createPosRouter());
 
   // Error handling
