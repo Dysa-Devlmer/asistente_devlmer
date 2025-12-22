@@ -18,7 +18,16 @@ if %errorlevel% equ 0 (
 )
 
 echo.
-echo [2/2] Deteniendo PostgreSQL...
+echo [2/3] Deteniendo frontend...
+taskkill /FI "WindowTitle eq POS Frontend*" /F >nul 2>&1
+if %errorlevel% equ 0 (
+    echo [OK] Frontend detenido
+) else (
+    echo [INFO] Frontend no estaba corriendo
+)
+
+echo.
+echo [3/3] Deteniendo PostgreSQL...
 call scripts\stop-db.bat
 
 echo.

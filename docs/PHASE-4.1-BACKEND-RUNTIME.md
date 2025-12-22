@@ -75,6 +75,16 @@ Constraints:
 - Payments require an open shift (`shiftId` must reference a shift with status `open`).
 - Invoices are allowed only for orders in status `closed`.
 
+## Runtime start/stop (TPV.exe style)
+
+Start:
+1) Run `start-pos.bat` from repo root.
+2) Wait for terminals: backend on `http://localhost:3000`, frontend on `http://localhost:5173`.
+
+Stop:
+1) Run `stop-pos.bat` from repo root.
+2) PostgreSQL stops via `scripts\\stop-db.bat`.
+
 ## Smoke test (2025-12-20)
 
 Environment:
