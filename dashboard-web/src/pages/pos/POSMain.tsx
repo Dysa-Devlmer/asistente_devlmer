@@ -11,6 +11,7 @@ import { useSale } from '../../hooks/pos/useSale';
 import { TableMap } from '../../components/pos/TableMap/TableMap';
 import { SaleView } from '../../components/pos/SaleView/SaleView';
 import { CheckoutModal } from '../../components/pos/Checkout/CheckoutModal';
+import { KitchenPanel } from '../../components/pos/KitchenPanel/KitchenPanel';
 import { Table } from '../../types/pos';
 
 type ViewMode = 'tables' | 'sale' | 'kitchen';
@@ -231,17 +232,7 @@ export const POSMain: React.FC = () => {
           />
         )}
 
-        {viewMode === 'kitchen' && (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center text-gray-500">
-              <svg className="w-24 h-24 mx-auto mb-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-              <p className="text-xl font-semibold">Panel de Cocina</p>
-              <p className="text-sm">Función en desarrollo</p>
-            </div>
-          </div>
-        )}
+        {viewMode === 'kitchen' && <KitchenPanel />}
       </div>
 
       {/* Checkout Modal */}

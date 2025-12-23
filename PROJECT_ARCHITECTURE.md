@@ -206,8 +206,12 @@ pos_venta/
 │   │   │   ├── Checkout/       # Payment processing
 │   │   │   │   └── CheckoutModal.tsx      (600 lines)
 │   │   │   │
-│   │   │   └── KitchenPanel/   # Kitchen display (WIP)
-│   │   │       └── KitchenPanel.tsx       (TBD)
+│   │   │   └── KitchenPanel/   # Kitchen display ✅
+│   │   │       ├── KitchenPanel.tsx       (230 lines)
+│   │   │       ├── KitchenOrderCard.tsx   (190 lines)
+│   │   │       └── __tests__/
+│   │   │           ├── KitchenPanel.test.tsx      (350 lines)
+│   │   │           └── KitchenOrderCard.test.tsx  (450 lines)
 │   │   │
 │   │   ├── pages/pos/          # Page components
 │   │   │   ├── POSLogin.tsx               (300 lines)
@@ -216,12 +220,14 @@ pos_venta/
 │   │   ├── store/              # Zustand stores
 │   │   │   ├── authStore.ts               (150 lines)
 │   │   │   ├── saleStore.ts               (150 lines)
-│   │   │   └── kitchenStore.ts            (TBD)
+│   │   │   ├── kitchenStore.ts            (150 lines) ✅
+│   │   │   └── __tests__/
+│   │   │       └── kitchenStore.test.ts   (650 lines)
 │   │   │
 │   │   ├── hooks/pos/          # Custom hooks
 │   │   │   ├── useSale.ts                 (300 lines)
 │   │   │   ├── useTables.ts               (100 lines)
-│   │   │   └── useKitchen.ts              (TBD)
+│   │   │   └── useKitchen.ts              (270 lines) ✅
 │   │   │
 │   │   ├── services/api/       # API clients
 │   │   │   ├── tablesApi.ts               (100 lines)
@@ -454,20 +460,87 @@ pos_venta/
 
 ---
 
-### Kitchen Panel (WIP - 60% pending)
+### Kitchen Panel (✅ Phase 6 Complete)
 
 **KitchenPanel** (`components/pos/KitchenPanel/KitchenPanel.tsx`)
-- Station filter buttons (4 stations)
-- Orders grid with real-time updates
-- WebSocket connection status indicator
-- Auto-refresh and sound notifications
+- **Station Filtering**: 4 kitchen stations + "All Stations" view
+  - Parrilla (Grill) - Orange
+  - Fríos (Cold Station) - Blue
+  - Bebidas (Bar) - Purple
+  - Postres (Desserts) - Pink
+- **Real-time Updates**: WebSocket integration with Socket.io
+- **Connection Status**: Visual indicator (green=connected, red=disconnected)
+- **Item Counters**: Badge showing pending count per station
+- **Auto-refresh**: Manual refresh button with loading state
+- **Error Handling**: Dismissible error alerts
+- **Empty States**: Contextual messages for no pending orders
+- **Stats Footer**: Total orders, total items, oldest order wait time
+- **Responsive Grid**: 1-4 columns depending on screen size
 
-**KitchenOrderCard** (Pending)
-- Order header: mesa, time, server
-- Items grouped by station
-- Pending quantity display
-- Mark served button
-- Visual status indicators
+**KitchenOrderCard** (`components/pos/KitchenPanel/KitchenOrderCard.tsx`)
+- **Order Header**:
+  - Mesa number and order ID
+  - Order age in minutes (auto-updating)
+  - Order creation time (HH:MM format)
+  - "Mark All Served" button
+- **Urgency Color Coding**:
+  - Green: < 10 minutes
+  - Yellow: 10-19 minutes
+  - Red: 20+ minutes
+- **Items Grouped by Station**:
+  - Station name with color indicator
+  - Items sorted by station number
+- **Item Display**:
+  - Quantity (large, bold) + Product name
+  - Notes (blue with 📝 icon)
+  - Observations (orange with ⚠️ icon)
+  - "Mark Served" button per item
+- **Loading States**: Spinner and disabled state during mark operations
+- **Error Handling**: Console logging with graceful recovery
+
+**useKitchen Hook** (`hooks/pos/useKitchen.ts`)
+- **WebSocket Management**:
+  - Auto-connection with reconnection logic
+  - Subscribe/unsubscribe to station-specific updates
+  - Ping/pong keep-alive (25s interval)
+- **Event Handlers**:
+  - `kitchen:new_items` - Sound notification + data reload
+  - `kitchen:item_served` - Update or remove item from list
+  - `kitchen:order_updated` - Reload items
+  - `kitchen:order_completed` - Reload data
+- **API Integration**:
+  - `loadItems()` - Fetch pending items
+  - `loadStats()` - Fetch kitchen statistics
+  - `markServed(id_venta, id_linea, quantity)` - Mark item served
+  - `markAllServed(id_venta, station)` - Mark all items served
+- **Sound Notifications**: Web Audio API beep on new orders (800Hz sine wave)
+- **Auto Stats Refresh**: Every 30 seconds
+- **Station Re-subscription**: Auto-resubscribe on station change
+
+**kitchenStore** (`store/kitchenStore.ts`)
+- **State**:
+  - `items`: Array of KitchenItem
+  - `stats`: KitchenStats or null
+  - `selectedStation`: number or null
+  - `isConnected`: boolean
+  - `loading`: boolean
+  - `error`: string or null
+- **Actions**:
+  - `setItems`, `addItem`, `updateItem`, `removeItem`
+  - `setStats`, `setSelectedStation`, `setConnected`
+  - `setLoading`, `setError`, `clearError`, `reset`
+- **Computed Getters**:
+  - `getOrderedItems()` - Group items by order, filter by station, sort by time
+  - `getItemsByStation(station)` - Filter items by station
+  - `getPendingCount()` - Total pending quantity across all items
+  - `getStationCount(station)` - Pending quantity for specific station
+- **Devtools**: Zustand devtools integration for debugging
+
+**Unit Tests** (✅ All passing)
+- `kitchenStore.test.ts` - 15 test suites covering all state operations
+- `KitchenPanel.test.tsx` - 12 test suites for component behavior
+- `KitchenOrderCard.test.tsx` - 11 test suites for order card functionality
+- **Total**: 38 unit tests for kitchen panel system
 
 ---
 
