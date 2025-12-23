@@ -45,7 +45,7 @@ timeout /t 5 /nobreak >nul
 
 REM Step 3: Start Frontend (Vite Dev Server)
 echo [3/3] Starting Frontend (Vite)...
-cd /d "%~dp0\..\dashboard-web"
+cd /d "%~dp0\..\frontend"
 start "POS Frontend" cmd /k "npm run dev"
 echo Frontend starting on http://localhost:5173
 echo.

@@ -79,7 +79,7 @@ cd backend
 npm install
 
 # Install frontend dependencies
-cd ../dashboard-web
+cd ../frontend
 npm install
 ```
 
@@ -113,7 +113,7 @@ npm run dev
 # Server running on http://localhost:7777
 
 # Terminal 2: Start Frontend
-cd dashboard-web
+cd frontend
 npm run dev
 # Frontend running on http://localhost:5173
 ```
@@ -221,7 +221,7 @@ npm test
 ### Frontend Tests
 
 ```bash
-cd dashboard-web
+cd frontend
 npm test
 ```
 
@@ -246,7 +246,7 @@ pos_venta/
 │   │   └── index.ts        # Entry point
 │   └── package.json
 │
-├── dashboard-web/           # React frontend
+├── frontend/           # React frontend
 │   ├── src/
 │   │   ├── components/pos/ # UI components
 │   │   ├── pages/pos/      # Page components

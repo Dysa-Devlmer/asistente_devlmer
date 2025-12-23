@@ -190,7 +190,7 @@ pos_venta/
 │   │
 │   └── package.json
 │
-├── dashboard-web/               # React frontend
+├── frontend/                    # React frontend (Vite + TypeScript)
 │   ├── src/
 │   │   ├── components/pos/     # POS components
 │   │   │   ├── TableMap/       # Table visualization
@@ -673,10 +673,10 @@ rm -rf archive/
 #### 2. Standardize Frontend Folder
 
 ```bash
-# Option A: Rename dashboard-web to frontend (cleaner)
-mv dashboard-web frontend
+# Option A: Rename frontend to frontend (cleaner)
+mv frontend frontend
 
-# Option B: Keep dashboard-web (current)
+# Option B: Keep frontend (current)
 # No action needed
 ```
 
@@ -688,7 +688,7 @@ cd backend
 npm prune
 
 # Frontend: Check and remove unused packages
-cd dashboard-web
+cd frontend
 npm prune
 ```
 
@@ -731,7 +731,7 @@ npm audit
 npm audit fix
 
 # Check frontend vulnerabilities
-cd dashboard-web
+cd frontend
 npm audit
 npm audit fix
 ```
