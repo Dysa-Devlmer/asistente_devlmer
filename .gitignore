@@ -65,7 +65,6 @@ archive/
 archive_temp/
 J.A.R.V.I.S/
 web-interface/
-frontend/
 
 # Old JARVIS files (prevent re-adding)
 *jarvis*.cjs
