@@ -6,6 +6,7 @@ import { createCashRouter } from './cash.routes';
 import { createPaymentsRouter } from './payments.routes';
 import { createInvoicesRouter } from './invoices.routes';
 import { createValidatorsRouter } from './validators.routes';
+import { createEmployeesRouter } from './employees.routes';
 
 // MISTURA-compliant routes (new implementation)
 import { createTablesRouter } from './routes/tables';
@@ -22,6 +23,7 @@ export function createPosRouter(wsService?: WebSocketService): Router {
   router.use('/payments', createPaymentsRouter());
   router.use('/invoices', createInvoicesRouter());
   router.use('/validators', createValidatorsRouter());
+  router.use('/employees', createEmployeesRouter());
   router.use('/', createCashRouter());
 
   // MISTURA-compliant routes (new POS implementation)
